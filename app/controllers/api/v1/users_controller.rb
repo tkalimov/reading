@@ -2,6 +2,7 @@ module Api
   module V1 
     class UsersController < ApplicationController
       after_filter :cors_set_access_control_headers
+      before_filter :authenticate_user!, only: [:edit, :update, :index, :destroy]
 
       def index
         @users = User.all
@@ -48,7 +49,7 @@ module Api
       private 
       
       def user_params
-          params.require(:user).permit(:name, :email, :password, :password_confirmation, :avatar)
+          params.require(:user).permit(:name, :email, :password)
       end 
 
     end
