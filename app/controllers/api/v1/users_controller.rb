@@ -1,3 +1,4 @@
+
 module Api
   module V1 
     class UsersController < ApplicationController
@@ -6,6 +7,8 @@ module Api
         @users = User.all
         render json: @users
       end
+
+=begin
 
       def show
         @user = User.find(params[:id])
@@ -54,6 +57,8 @@ module Api
       def user_params
           params.require(:user).permit(:name, :email, :password, :password_confirmation, :avatar)
       end 
+
+=end
     end
   end 
 end
