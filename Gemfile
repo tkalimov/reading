@@ -12,7 +12,7 @@ gem 'rails_12factor'
 group :development, :test do
   gem 'rspec-rails' 
   gem 'factory_girl_rails'
-  gem "debugger", "~> 1.6.5"
+  # gem "debugger", "~> 1.6.5"
   # gem 'guard-rspec', '2.5.0'
   # gem 'spork-rails', '4.0.0'
   # gem 'guard-spork', '1.5.0'
