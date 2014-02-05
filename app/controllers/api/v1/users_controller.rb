@@ -2,12 +2,11 @@ module Api
   module V1 
     class UsersController < ApplicationController
       after_filter :cors_set_access_control_headers
+
       def index
         @users = User.all
         render json: @users
       end
-
-=begin
 
       def show
         @user = User.find(params[:id])
@@ -46,18 +45,12 @@ module Api
         head :no_content
       end
 
-      def cors_set_access_control_headers
-          headers['Access-Control-Allow-Origin'] = 'null'
-          headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, DELETE'
-      end
-
       private 
       
       def user_params
           params.require(:user).permit(:name, :email, :password, :password_confirmation, :avatar)
       end 
 
-=end
     end
   end 
 end
