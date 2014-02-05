@@ -5,7 +5,7 @@ ruby '2.0.0'
 gem 'rails', '4.0.2'
 gem 'rails-api'
 gem 'pg'
-# gem 'unicorn'
+gem 'unicorn'
 gem 'rails_12factor'
 
 
