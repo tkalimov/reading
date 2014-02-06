@@ -41,7 +41,7 @@ module Api
 		  	private
 
 		    def survey_params
-		      params.permit(:mood)
+		      params.require(:survey).permit(:mood)
 		    end
 
 		end
