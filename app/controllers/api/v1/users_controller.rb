@@ -2,7 +2,7 @@ module Api
   module V1 
     class UsersController < ApplicationController
       after_filter :cors_set_access_control_headers
-      before_filter :authenticate_user!, only: [:edit, :update, :index, :destroy]
+      # before_filter :authenticate_user!, only: [:edit, :update, :destroy]
 
       def index
         @users = User.all

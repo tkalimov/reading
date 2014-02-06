@@ -2,8 +2,9 @@ module Api
 	module V1
 		class SurveysController < ApplicationController
 			after_filter :cors_set_access_control_headers
-			before_filter :authenticate_user!, only: [:edit, :update, :index, :destroy]
+			# before_filter :authenticate_user!, only: [:edit, :update, :index, :destroy]
 
+			
 			def index 
 				@surveys = Survey.all
 				render json: @surveys
