@@ -2,6 +2,8 @@ module Api
   module V1 
     class UsersController < ApplicationController
       after_filter :cors_set_access_control_headers
+      before_filter :authenticate_user_from_token!
+      before_filter :authenticate_api_v1_user!
 
       def index
         @users = User.all
@@ -14,43 +16,24 @@ module Api
         render json: @user
       end
 
-      def create
-        @user = User.new(user_params)
-
-        if @user.save
-          render json: @user, status: :created
-        else
-          render json: @user.errors, status: :unprocessable_entity
-        end
-      end
-
-      # PATCH/PUT /users/1
-      # PATCH/PUT /users/1.json
-      def update
-        @user = User.find(params[:id])
-
-        if @user.update(params[:user])
-          head :no_content
-        else
-          render json: @user.errors, status: :unprocessable_entity
-        end
-      end
-
-      # DELETE /users/1
-      # DELETE /users/1.json
-      def destroy
-        @user = User.find(params[:id])
-        @user.destroy
-
-        head :no_content
-      end
-
       private 
       
       def user_params
-          params.require(:user).permit(:name, :email, :password, :password_confirmation, :avatar)
+          params.require(:user).permit(:name, :email, :password)
       end 
 
+      def authenticate_user_from_token!
+  	    user_token = request.headers['user-token']
+  	    user       = user_token && User.find_by_authentication_token(user_token.to_s)
+  	 
+  	    if user
+  	      # Notice we are passing store false, so the user is not
+  	      # actually stored in the session and a token is needed
+  	      # for every request. If you want the token to work as a
+  	      # sign in token, you can simply remove store: false.
+  	      sign_in user, store: false
+  	    end
+	    end
     end
   end 
 end

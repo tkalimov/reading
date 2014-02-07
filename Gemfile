@@ -7,6 +7,7 @@ gem 'rails-api'
 gem 'pg'
 gem 'unicorn'
 gem 'rails_12factor'
+gem 'devise'
 
 
 group :development, :test do
