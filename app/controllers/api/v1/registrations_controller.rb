@@ -3,8 +3,7 @@ module Api
 		class RegistrationsController < Devise::RegistrationsController
 			
 		      after_filter :cors_set_access_control_headers
-		      # before_filter :authenticate_user!, only: [:edit, :update, :destroy]
-				
+
 		      def create
 		        @user = User.new(user_params)
 
@@ -35,12 +34,14 @@ module Api
 
 		        head :no_content
 		      end
-
+				
+		    
 		      private 
 		      
 		      def user_params
 		          params.require(:user).permit(:name, :email, :password)
 		      end 
+
 		end 
 	end
 end 

@@ -9,6 +9,5 @@ AlphaApi::Application.routes.draw do
       match '/users/:id', to: 'users#show', via: 'get'
     end
   end 
-  devise_for :users
-  
+	  
 end
