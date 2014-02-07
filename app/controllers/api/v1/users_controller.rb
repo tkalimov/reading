@@ -19,9 +19,9 @@ module Api
       private 
       
       def user_params
-          params.require(:user).permit(:name, :email, :password)
+          params.require(:user).permit(:first_name, :last_name, :email, :password, :business_name)
       end 
-
+      
       def authenticate_user_from_token!
   	    user_token = request.headers['user-token']
   	    user       = user_token && User.find_by_authentication_token(user_token.to_s)
