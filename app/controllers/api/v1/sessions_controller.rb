@@ -2,11 +2,10 @@ module Api
   module V1
       class SessionsController < Devise::SessionsController
 	    # prepend_before_filter :require_no_authentication, :only => [:create ]
-
 	    before_filter :ensure_params_exist
 	    
 	    def create
-	      build_resource()
+	      # build_resource
 	      resource = User.find_for_database_authentication(:email => params[:user][:email])
 	      return invalid_login_attempt unless resource
 
@@ -22,9 +21,9 @@ module Api
 	      sign_out(resource_name)
 	    end
 		
-		def build_resource(hash=nil)
-    		self.resource = resource_class.new_with_session(hash || {}, session)
-  		end
+		# def build_resource(hash=nil)
+  #   		self.resource = resource_class.new_with_session(hash || {}, session)
+  # 		end
 	    
 	    protected
 
