@@ -8,7 +8,8 @@ module Api
 		        @user = User.new(user_params)
 
 		        if @user.save
-		          render json: @user, status: :created
+		          # render json: @user, status: :created
+		          render :json=> {:success=>true, :auth_token=>@user.authentication_token, :email=>@user.email}
 		        else
 		          render json: @user.errors, status: :unprocessable_entity
 		        end
