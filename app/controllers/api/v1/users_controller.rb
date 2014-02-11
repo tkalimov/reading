@@ -7,13 +7,13 @@ module Api
 
       def index      
         @users = User.all
-        render json: @users
+        render json: @users.as_json(only: [:id, :first_name, :last_name, :email, :business_name, :created_at, :sign_in_count, :current_sign_in_at, :last_sign_in_at])
       end
 
       def show
         @user = User.find(params[:id])
 
-        render json: @user
+        render json: @user.as_json(only: [:id, :first_name, :last_name, :email, :business_name, :created_at, :sign_in_count, :current_sign_in_at, :last_sign_in_at])
       end
 
       private 
@@ -41,7 +41,7 @@ end
 
   # def show
   #   @post = Post.find(params[:id])
-  #   render json: @post.as_json(
+  # #   render json: @post.as_json(
   #     only: [:id, :content, :created_at],
   #     include: { user: { only: [:id, :username] } }
   #   )

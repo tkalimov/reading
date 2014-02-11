@@ -8,7 +8,8 @@ module Api
 
       def index
         @conversations = Conversation.all
-        render json: @conversations
+        render json: @conversations.as_json(only: [:id, :content, :created_at], 
+            include: { user: { only: [:id, :first_name, :last_name, :business_name] } })
       end
 
       def create
@@ -24,7 +25,7 @@ module Api
       def destroy
         @conversation = Conversation.find(params[:id])
         if @conversation.destroy
-          render :json=>{:success=>true, :message=>"Post deleted"}, :status=>422
+          render :json=>{:success=>true, :message=>"Post deleted"}
         else 
           render :json=>{:success=>false, :message=>"This was not your post and you cannot delete it"}
         end 

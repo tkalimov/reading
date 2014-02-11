@@ -1,1 +1,136 @@
-ALPHA
+ALPHA API USAGE DOCUMENT
+___________________________________________________________________
+Basic Authentication:
+    email: ********
+    password: ********
+
+Content Type :
+   JSON
+
+
+REQUESTS
+---------------------------------------------------------
+Sending basic GET Request: 
+ $.ajax({
+        method: 'GET',
+        url: 'URL',
+    }).done(function(response) {});
+
+Sending GET Requests where Authorization required:	 
+	$.ajax({
+        method: 'GET',
+        url: 'URL',
+        headers: {
+            "user-token": localStorage.auth_token
+        }
+    }).done(function(response) {});
+
+Sending basic POST requests: 
+	$.ajax({
+        method: 'POST',
+        url: 'URL',
+        data: {data}
+    });
+
+Sending POST Requests where Authorization is required:
+	$.ajax({
+        method: 'POST',
+        url: 'URL',
+        data: {data},
+        headers: {
+          "user-token": localStorage.auth_token
+        }
+    });
+
+Sending DELETE Requests where Authorization required:	 
+	$.ajax({
+        method: 'DELETE',
+        url: 'URL',
+        headers: {
+          "user-token": localStorage.auth_token
+        }
+    });
+
+   
+API REQUEST ROUTES:
+
+=> listing users
+   url: http://localhost:3000/api/v1/users
+   method: GET
+   AUTHENTICATION REQUIRED
+   Example response object:
+	   {Object1, Object2, ...}
+     Object1: 
+     {
+        "id": 1,
+        "first_name": "Tim",
+        "last_name": null,
+        "created_at": "2014-02-11T08:39:43.000-05:00",
+        "email": "tim@roundview.co",
+        "sign_in_count": 51,
+        "current_sign_in_at": "2014-02-11T12:27:03.000-05:00",
+        "last_sign_in_at": "2014-02-11T12:23:18.000-05:00",
+        "business_name": "Roundview"
+    	}
+    Failed response object: 
+      {
+      "error": "You need to sign in or sign up before continuing."
+      }
+
+=> Retrieving User detail
+  url: http://localhost:3000/api/v1/users/:id 
+  method: GET
+  AUTHENTICATION REQUIRED
+  Example response object:
+     {
+        "id": 1,
+        "first_name": "Tim",
+        "last_name": null,
+        "created_at": "2014-02-11T08:39:43.000-05:00",
+        "email": "tim@roundview.co",
+        "sign_in_count": 51,
+        "current_sign_in_at": "2014-02-11T12:27:03.000-05:00",
+        "last_sign_in_at": "2014-02-11T12:23:18.000-05:00",
+        "business_name": "Roundview"
+      }
+  Failed response object: 
+      {
+      "error": "You need to sign in or sign up before continuing."
+      }    
+
+=> creating users
+   url: http://localhost:3000/api/v1/users
+   method: POST
+   data required: 
+      {user: 
+          first_name
+          last_name
+          email
+          password
+          business_name
+      }
+    Example response object: 
+      {
+        "success": true,
+        "auth_token": "pFi5h7SQsQo3fGNt_jRN",
+        "email": "tim2@roundview.co"
+      }   
+    Example failed object: 
+    {
+      "email": [
+          "can't be blank"
+      ],
+      "password": [
+          "can't be blank"
+      ]
+    }
+
+=> Updating User
+  url: http://localhost:3000/api/v1/users/:id 
+  method: PUT
+  Body : It can be xml or json
+  
+=> Deleting User 
+  url: http://localhost:3000/api/v1/users/:id 
+  method: DELETE
+  body : not needed
