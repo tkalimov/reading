@@ -21,5 +21,15 @@ module AlphaApi
     
     # Include full middleware
     # config.api_only = false
+    # config.middleware.use "Cors"
+    
+    config.middleware.use Rack::Cors do
+      allow do
+        origins '*'
+        resource '*', :headers => :any, :methods => [:get, :post, :put, :delete]
+      end
+    end
+
+    config.middleware.insert_before Warden::Manager, Rack::Cors
   end
 end
