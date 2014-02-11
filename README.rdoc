@@ -10,13 +10,13 @@ Content Type :
 
 REQUESTS
 ---------------------------------------------------------
-Sending basic GET Request: 
+=>Sending basic GET Request: 
  $.ajax({
         method: 'GET',
         url: 'URL',
     }).done(function(response) {});
 
-Sending GET Requests where Authorization required:	 
+=>Sending GET Requests where Authorization required: 
 	$.ajax({
         method: 'GET',
         url: 'URL',
@@ -25,14 +25,14 @@ Sending GET Requests where Authorization required:
         }
     }).done(function(response) {});
 
-Sending basic POST requests: 
+=>Sending basic POST requests: 
 	$.ajax({
         method: 'POST',
         url: 'URL',
         data: {data}
     });
 
-Sending POST Requests where Authorization is required:
+=>Sending POST Requests where Authorization is required:
 	$.ajax({
         method: 'POST',
         url: 'URL',
@@ -42,7 +42,7 @@ Sending POST Requests where Authorization is required:
         }
     });
 
-Sending DELETE Requests where Authorization required:	 
+=>Sending DELETE Requests where Authorization required:	 
 	$.ajax({
         method: 'DELETE',
         url: 'URL',
@@ -53,7 +53,9 @@ Sending DELETE Requests where Authorization required:
 
    
 API REQUEST ROUTES:
-
+--------------------------------------------------------------
+USERS
+--------------------------------------------------------------
 => listing users
    url: http://localhost:3000/api/v1/users
    method: GET
@@ -125,12 +127,126 @@ API REQUEST ROUTES:
       ]
     }
 
-=> Updating User
+=> Updating User info 
   url: http://localhost:3000/api/v1/users/:id 
   method: PUT
-  Body : It can be xml or json
+  AUTHENTICATION REQUIRED
+  Example response object:
+    {
+      "id": 12,
+      "first_name": "Tim",
+      "last_name": null,
+      "created_at": "2014-02-11T14:53:23.000-05:00",
+      "email": "tasdimsdf2@roundfdview.codsf",
+      "sign_in_count": 15,
+      "current_sign_in_at": "2014-02-11T14:57:45.000-05:00",
+      "last_sign_in_at": "2014-02-11T14:57:17.000-05:00",
+      "authentication_token": "yBuEspDKFz7auLjFV9dt",
+      "business_name": null
+    }
+  Example failed object:
+    {
+    "errors": [
+        "Invalid login credentials"
+      ]
+    }
   
 => Deleting User 
   url: http://localhost:3000/api/v1/users/:id 
   method: DELETE
-  body : not needed
+  AUTHENTICATION REQUIRED 
+  Example response object: 
+    {
+    "success": true,
+    "message": "User deleted"
+    }
+
+CONVERSATIONS
+--------------------------------------------------------------
+=> pull all conversations
+   url: http://localhost:3000/api/v1/conversations
+   method: GET
+   AUTHENTICATION REQUIRED
+   Example response object:
+     {Object1, Object2, ...}
+     Object1: 
+     {
+        "id": 5,
+        "content": "woohoo",
+        "created_at": "2014-02-11T12:20:10.000-05:00",
+        "user": {
+            "id": 1,
+            "first_name": "Tim",
+            "last_name": null,
+            "business_name": null
+        }
+    },
+    Failed response object: 
+      {
+      "error": "You need to sign in or sign up before continuing."
+      } 
+
+=> creating conversation post
+   url: http://localhost:3000/api/v1/conversations
+   method: POST
+   AUTHENTICATION REQUIRED
+   data required: 
+      {conversation: 
+          content
+      }
+    Example response object: 
+      {
+          "id": 6,
+          "content": "this is my test post",
+          "user_id": 1,
+          "created_at": "2014-02-11T14:03:37.898-05:00",
+          "updated_at": "2014-02-11T14:03:37.898-05:00"
+      } 
+    Example failed object: 
+    {
+      "error": "You need to sign in or sign up before continuing."
+    }
+  
+=> Deleting conversation post
+  url: http://localhost:3000/api/v1/conversations/:id
+  method: DELETE
+  AUTHENTICATION REQUIRED
+  Example response object: 
+    {
+      "success": true,
+      "message": "Post deleted"
+    }
+  Example failed object: 
+  {
+    "errors": [
+        "Invalid login credentials"
+    ]
+  }
+
+
+SESSIONS (SIGN-IN/OUT)
+--------------------------------------------------------------
+=> Sign-in 
+   url: http://localhost:3000/api/v1/users/sign_in
+   method: POST
+   AUTHENTICATION REQUIRED
+   Example response object:
+     {
+        "success": true,
+        "auth_token": "WLBsxw5Zb5h6F-moBcbo",
+        "email": "tim@roundview.co"
+      }
+    Failed response object: 
+      {
+        "success": false,
+        "message": "Error with your login or password"    
+      }
+
+=> Sign-out
+   url: http://localhost:3000/api/v1/users/sign_out
+   method: DELETE
+   Example response object: 
+      {
+        "success": true,
+        "message": "Sign out successful"    
+      }

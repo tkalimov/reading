@@ -24,11 +24,7 @@ module Api
 
       def destroy
         @conversation = Conversation.find(params[:id])
-        if @conversation.destroy
-          render :json=>{:success=>true, :message=>"Post deleted"}
-        else 
-          render :json=>{:success=>false, :message=>"This was not your post and you cannot delete it"}
-        end 
+        render :json=>{:success=>true, :message=>"Post deleted"} if @conversation.destroy
       end
 
       private
@@ -52,6 +48,8 @@ module Api
         
         def correct_user
           @conversation = current_api_v1_user.conversations.find_by(id: params[:id])
+          # @conversation = Conversation.find(params[:id])
+          render json: {:success=>false, :errors=>:unauthorized_entity} if @conversation.nil?
         end
     end
   end 

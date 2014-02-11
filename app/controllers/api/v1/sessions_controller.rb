@@ -2,13 +2,13 @@ module Api
   module V1
       class SessionsController < Devise::SessionsController
 	    # prepend_before_filter :require_no_authentication, :only => [:create ]
-	    before_filter :ensure_params_exist
+	    before_filter :ensure_params_exist, only: :create
 	    
 	    def create
 	      # build_resource
 	      resource = User.find_for_database_authentication(:email => params[:user][:email])
 	      return invalid_login_attempt unless resource
-
+		  # debugger		
 	      if resource.valid_password?(params[:user][:password])
 	        sign_in resource
 	        render :json=> {:success=>true, :auth_token=>resource.authentication_token, :email=>resource.email}
@@ -18,7 +18,9 @@ module Api
 	    end
 
 	    def destroy
-	      sign_out(resource_name)
+	    	if sign_out(current_api_v1_user)
+	      		render :json=> {:success=>true, :message=> "Sign out successful"} 
+	      	end 
 	    end
 		
 		# def build_resource(hash=nil)

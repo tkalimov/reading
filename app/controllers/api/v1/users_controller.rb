@@ -15,6 +15,27 @@ module Api
 
         render json: @user.as_json(only: [:id, :first_name, :last_name, :email, :business_name, :created_at, :sign_in_count, :current_sign_in_at, :last_sign_in_at])
       end
+      
+      # PATCH/PUT /users/1
+      # PATCH/PUT /users/1.json
+      def update
+        @user = User.find(params[:id])
+        if @user.update_attributes(user_params)
+          render json: @user.as_json(only: [:id, :first_name, :last_name, :email, :business_name, :created_at, :sign_in_count, :current_sign_in_at, :last_sign_in_at, :authentication_token])
+          sign_in @user
+        else
+          render json: @user.errors, status: :unprocessable_entity
+        end
+      end
+
+      # DELETE /users/1
+      # DELETE /users/1.json
+      def destroy
+        @user = User.find(params[:id])
+        if @user.destroy
+          render :json=>{:success=>true, :message=>"User deleted"}
+        end 
+      end
 
       private 
       
