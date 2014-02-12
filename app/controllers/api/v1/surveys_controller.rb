@@ -7,13 +7,13 @@ module Api
 
 			def index 
 				@surveys = Survey.all
-				render json: @surveys
+				render json: @surveys.as_json(only: [:id, :mood, :created_at]) 
 			end
 			
 			def create 
 				@survey = Survey.new(survey_params)
 				if @survey.save
-					render json: @survey, status: :created
+					render :json=> {:success=>true, :mood=>@survey.mood, :created_at=>@survey.created_at, :response_count=>Survey.count}
 				else 
 					render json: @survey.errors, status: :unprocessable_entity
 				end 
