@@ -9,6 +9,7 @@ gem 'unicorn'
 gem 'rails_12factor'
 gem 'devise'
 gem 'rack-cors', :require => 'rack/cors'
+gem 'survey', :git => 'git://github.com/runtimerevolution/survey.git'
 
 group :development, :test do
   gem 'rspec-rails' 

@@ -56,7 +56,7 @@ ALL REQUIRE AUTHENTICATION
    url: http://localhost:3000/api/v1/surveys.json
    method: POST
    data required: 
-      {survey: mood
+      {option[text]
       }
     Example response object: 
       {
