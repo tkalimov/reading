@@ -40,7 +40,7 @@ module Api
       private 
       
       def user_params
-          params.require(:user).permit(:first_name, :last_name, :email, :password, :business_name)
+          params.require(:user).permit(:first_name, :last_name, :email, :password, :business_name, :avatar)
       end 
       
       def authenticate_user_from_token!
