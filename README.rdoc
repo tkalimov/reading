@@ -59,26 +59,21 @@ ALL REQUIRE AUTHENTICATION
       {option[text]
       }
     Example response object: 
-      
       {
         "success": true,
-        "mood": "jackass",
-        "created_at": "2014-02-12T14:40:43.546-05:00",
-        "response_count": 5
-      }   
+        "response": "Good",
+        "created_at": "2014-02-12T18:26:51.000-05:00",
+        "response_count": 3
+      }  
     Example failed object: 
-    {
-      "success": true,
-      "response": "Good",
-      "created_at": "2014-02-12T18:26:51.000-05:00",
-      "response_count": 3
-    }
+    
 
 > Get survey results
    url: http://localhost:3000/api/v1/surveys.json
    method: GET
    AUTHENTICATION REQUIRED
    Example response object:
+         {answers, question, options}
          {
         "answers": [
             {
@@ -311,6 +306,11 @@ SESSIONS (SIGN-IN/OUT)
    url: http://localhost:3000/api/v1/users/sign_in
    method: POST
    AUTHENTICATION REQUIRED
+   data required: 
+      {user: 
+          email
+          password
+      }
    Example response object:
      {
         "success": true,

@@ -9,7 +9,6 @@ module Api
 			def index
 				@answers =  Survey::Answer.where(:question == question, :survey == survey)
 				render :json=> {:answers=>@answers, :question=>question, :options=>question.options}
-				# .as_json(only: [:id, :mood, :created_at]) 
 			end
 			
 			def create 
