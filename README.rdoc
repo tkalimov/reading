@@ -331,3 +331,35 @@ SESSIONS (SIGN-IN/OUT)
         "success": true,
         "message": "Sign out successful"    
       }
+
+= SURVEY SET-UP
+my_survey = Survey::Survey.new do |survey|
+  survey.name = "Business Pulse" 
+  survey.description = "How business is going"
+  survey.attempts_number = 1
+  survey.active = true
+end
+
+
+question_1 = Survey::Question.new do |question|
+  question.text = 'How has business been going over the past week?'
+  question.options = [
+    Survey::Option.new(:text => 'Good'),
+    Survey::Option.new(:text => 'Bad')
+  ]
+end
+
+my_survey.questions = [question_1]
+my_survey.save!
+
+
+
+-------------------=======================
+
+attempt = Survey::Attempt.new(:survey => my_survey, :participant => tim)
+answer_1 = Survey::Answer.new(:option => question_1.options.first, :question => question_1)
+attempt.answers = [answer_1]
+attempt.save
+
+
+:survey => my_survey, :participant => tim, :option => question_1.options.first

@@ -9,6 +9,7 @@ AlphaApi::Application.routes.draw do
       match '/users/:id', to: 'users#show', via: 'get'
       match '/users/:id', to: 'users#destroy', via: 'delete'
       match '/users/:id', to: 'users#update', via: 'put'
+      match '/auth/:provider/callback', to: 'sessions#create', via: 'get'
       resources :conversations, only: [:create, :destroy, :index]
     end
   end 

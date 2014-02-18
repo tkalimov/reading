@@ -29,7 +29,7 @@ module AlphaApi
         resource '*', :headers => :any, :methods => [:get, :post, :put, :delete]
       end
     end
-
+    config.middleware.use Rack::Session::Cookie
     config.middleware.insert_before Warden::Manager, Rack::Cors
   end
 end

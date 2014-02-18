@@ -12,6 +12,7 @@ gem 'rack-cors', :require => 'rack/cors'
 gem 'survey', :git => 'git://github.com/runtimerevolution/survey.git'
 gem 'paperclip'
 gem 'aws-sdk'
+gem 'omniauth-twitter'
 
 group :development, :test do
   gem 'rspec-rails' 
