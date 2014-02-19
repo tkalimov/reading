@@ -19,3 +19,5 @@
 
 # Ignore S3
 /config/initializers/s3_constants.rb
+# Ignore application configuration
+/config/application.yml

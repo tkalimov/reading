@@ -31,5 +31,6 @@ module AlphaApi
     end
     config.middleware.use Rack::Session::Cookie
     config.middleware.insert_before Warden::Manager, Rack::Cors
+    config.secret_key_base = 'blipblapblup'
   end
 end
