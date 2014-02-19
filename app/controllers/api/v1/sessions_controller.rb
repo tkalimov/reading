@@ -6,10 +6,9 @@ module Api
 	    
 	    def create
 	      # build_resource
-	      # resource = User.find_for_database_authentication(:email => params[:user][:email])
-	      resource = User.find_or_create_from_auth_hash(auth_hash)
+	      resource = User.find_for_database_authentication(:email => params[:user][:email])
+	      # resource = User.find_or_create_from_auth_hash(auth_hash)
 	      return invalid_login_attempt unless resource
-		  # debugger		
 	      if resource.valid_password?(params[:user][:password])
 	        sign_in resource
 	        render :json=> {:success=>true, :auth_token=>resource.authentication_token, :email=>resource.email}
@@ -23,11 +22,7 @@ module Api
 	      		render :json=> {:success=>true, :message=> "Sign out successful"} 
 	      	end 
 	    end
-		
-		# def build_resource(hash=nil)
-  #   		self.resource = resource_class.new_with_session(hash || {}, session)
-  # 		end
-	    
+			    
 	    protected
 
 	    def ensure_params_exist
