@@ -1,13 +1,12 @@
 class User < ActiveRecord::Base
   has_many :conversations, dependent: :destroy 
   has_surveys
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable, :omniauthable, :omniauth_providers => [:twitter, :linkedin, :google_oauth2, :facebook]
   has_attached_file :avatar, styles: {thumb: '100x100>', square: '200x200#', medium: '300x300>'}
   validates_attachment_content_type :avatar, :content_type => /\Aimage\/.*\Z/
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :trackable, :validatable, 
+         :omniauthable, :omniauth_providers => [:linkedin, :google_oauth2, :facebook]
   before_save :ensure_authentication_token
- 
-  
 
   def ensure_authentication_token
     if authentication_token.blank?

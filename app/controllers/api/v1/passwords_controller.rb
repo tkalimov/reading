@@ -1,15 +1,11 @@
-module Api
+	module Api
   module V1
       class PasswordsController < Devise::PasswordsController
       	  after_filter :cors_set_access_control_headers
       	  prepend_before_filter :require_no_authentication
   		  append_before_filter :assert_reset_token_passed, :only => :edit
 		  respond_to :json
-		  # # GET /resource/password/new
-		  # def new
-		  #   self.resource = resource_class.new
-		  # end
-
+		  
 		  # POST /resource/password
 		  def create
 		    self.resource = resource_class.send_reset_password_instructions(user_params)

@@ -23,13 +23,11 @@ module Api
 
 			end
 
-			#NEED TO delete?
 			def show
 		    	@survey = Survey.find(params[:id])
 		    	render json: @survey
 		  	end
 
-		    #NEED TO delete? 
 		    def update
 		    	@survey = Survey.find(params[:id])
 		    	 
@@ -40,7 +38,6 @@ module Api
         		end
 		    end
 			
-			#NEED TO UPDATE
 		    def destroy
 		        @survey = Survey.find(params[:id])
         		@survey.destroy

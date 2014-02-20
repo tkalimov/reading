@@ -12,11 +12,9 @@ module Api
 
       def show
         @user = User.find(params[:id])
-
         render json: @user.as_json(only: [:id, :first_name, :last_name, :email, :business_name, :created_at, :sign_in_count, :current_sign_in_at, :last_sign_in_at])
       end
       
-      # PATCH/PUT /users/1
       # PATCH/PUT /users/1.json
       def update
         @user = User.find(params[:id])
@@ -28,7 +26,6 @@ module Api
         end
       end
 
-      # DELETE /users/1
       # DELETE /users/1.json
       def destroy
         @user = User.find(params[:id])
@@ -44,7 +41,6 @@ module Api
       end 
       
       def authenticate_user_from_token!
-  	    # user_token = params[:user_token].presence
         user_token = request.headers['user-token']
   	    user       = user_token && User.find_by_authentication_token(user_token.to_s)
   	 
@@ -59,11 +55,3 @@ module Api
     end
   end 
 end
-
-  # def show
-  #   @post = Post.find(params[:id])
-  # #   render json: @post.as_json(
-  #     only: [:id, :content, :created_at],
-  #     include: { user: { only: [:id, :username] } }
-  #   )
-  # end

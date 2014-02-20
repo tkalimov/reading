@@ -1,13 +1,12 @@
 module Api
   module V1
       class SessionsController < Devise::SessionsController
-	    # prepend_before_filter :require_no_authentication, :only => [:create ]
+	    prepend_before_filter :require_no_authentication, :only => [:create ]
 	    before_filter :ensure_params_exist, only: :create
 	    
 	    def create
 	      # build_resource
-	      resource = User.find_for_database_authentication(:email => params[:user][:email])
-	      # resource = User.find_or_create_from_auth_hash(auth_hash)
+	      resource = User.find_for_database_authentication(:email => params[:user][:email]) z
 	      return invalid_login_attempt unless resource
 	      if resource.valid_password?(params[:user][:password])
 	        sign_in resource
