@@ -7,7 +7,9 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable, 
          :omniauthable, :omniauth_providers => [:linkedin, :google_oauth2, :facebook]
   before_save :ensure_authentication_token
-
+  before_save { |user| user.first_name = first_name.downcase.capitalize }
+  before_save { |user| user.last_name = last_name.downcase.capitalize }
+  
   def ensure_authentication_token
     if authentication_token.blank?
       self.authentication_token = generate_authentication_token

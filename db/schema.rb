@@ -11,21 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140226153523) do
+ActiveRecord::Schema.define(version: 20140213192328) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "businesses", force: true do |t|
-    t.string   "name"
-    t.string   "street_address"
-    t.string   "city"
-    t.string   "state"
-    t.integer  "zipcode"
-    t.string   "phone"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
 
   create_table "conversations", force: true do |t|
     t.string   "content"
@@ -79,12 +68,6 @@ ActiveRecord::Schema.define(version: 20140226153523) do
     t.datetime "updated_at"
   end
 
-  create_table "surveys", force: true do |t|
-    t.string   "mood"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "users", force: true do |t|
     t.string   "first_name"
     t.string   "last_name"
@@ -102,6 +85,8 @@ ActiveRecord::Schema.define(version: 20140226153523) do
     t.string   "last_sign_in_ip"
     t.string   "authentication_token"
     t.string   "business_name"
+    t.string   "business_zipcode"
+    t.string   "business_address"
     t.string   "avatar_file_name"
     t.string   "avatar_content_type"
     t.integer  "avatar_file_size"
@@ -111,6 +96,7 @@ ActiveRecord::Schema.define(version: 20140226153523) do
   end
 
   add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", unique: true, using: :btree
+  add_index "users", ["business_address"], name: "index_users_on_business_address", unique: true, using: :btree
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
