@@ -16,6 +16,7 @@ gem 'omniauth-facebook'
 gem 'omniauth-linkedin-oauth2'
 gem "omniauth-google-oauth2"
 gem 'figaro'
+gem 'httparty'
 
 group :development, :test do
   gem 'rspec-rails' 
