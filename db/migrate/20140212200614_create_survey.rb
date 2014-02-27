@@ -5,7 +5,7 @@ class CreateSurvey < ActiveRecord::Migration
     create_table :survey_surveys do |t|
       t.string  :name
       t.text    :description
-      t.integer :attempts_number, :default => 0
+      t.integer :attempts_number, :default => 1000
       t.boolean :finished, :default => false
       t.boolean :active, :default => false
 

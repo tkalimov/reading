@@ -2,15 +2,47 @@ module Api
 	module V1
 		class SurveysController < ApplicationController
 			after_filter :cors_set_access_control_headers
-			before_filter :authenticate_user_from_token!
-      		before_filter :authenticate_api_v1_user!
+			# before_filter :authenticate_user_from_token!, :except => [:admin_survey, :admin_question]
+      		# before_filter :authenticate_api_v1_user!, :except => [:admin_survey, :admin_question]
 			helper_method :survey, :participant, :question
 
 			def index
-				@answers =  Survey::Answer.where(:question == question, :survey == survey)
-				render :json=> {:answers=>@answers, :question=>question, :options=>question.options}
+				survey = Survey::Survey.active.first
+				# questions_array = Array.new
+				options = Hash.new
+				questions = survey.questions
+				questions.each do |question|
+					options = question.options
+				end 
+				render :json=> {:questions=>questions.as_json(:only=>[:id, :survey_id, :text]), :options=>options.as_json(:only=>[:id, :question_id, :text])}
 			end
 			
+			def admin_survey
+				my_survey = Survey::Survey.new do |survey|
+				  survey.name = params[:survey][:name]
+				  survey.description = params[:survey][:description]
+				  survey.active = params[:survey][:active]
+				end
+
+				question_1 = Survey::Question.new do |question|
+					  question.text = params[:survey][:question_text]
+					  # by default when we don't specify the weight of a option
+					  # its value is equal to one
+					  question.options = [
+					    Survey::Option.new(:text => params[:survey][:question_option1],  :correct => false),
+					    Survey::Option.new(:text => params[:survey][:question_option2], :correct => true),
+					  ]
+				end
+				my_survey.questions = [question_1]
+
+				if my_survey.save!
+					render json: my_survey
+				else 
+					render json: my_survey.errors, status: :unprocessable_entity
+				end
+			end 
+			
+
 			def create 
 				@attempt = Survey::Attempt.new(:survey => survey, :participant => participant)
 				@response = Survey::Option.find_by_text(params[:option][:text])
@@ -59,7 +91,7 @@ module Api
 				end
 
 			    def survey_params
-			      params.require(:option).permit(:text)
+			      params.require(:survey).permit(:name, :description, :attempts_number, :finished, :active)
 			    end
 				
 			    def authenticate_user_from_token!

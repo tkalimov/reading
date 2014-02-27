@@ -12,6 +12,7 @@ AlphaApi::Application.routes.draw do
       resources :conversations, only: [:create, :destroy, :index]
       match '/businesses/find_business', to: 'users#find_business', via: 'get'
       match '/businesses/create_business', to: 'users#create_business', via: 'post'
+      match '/surveys/admin_survey', to: 'surveys#admin_survey', via: 'post'
     end
   end 
 end
