@@ -2,29 +2,29 @@ module Api
 	module V1
 		class SurveysController < ApplicationController
 			after_filter :cors_set_access_control_headers
-			# before_filter :authenticate_user_from_token!, :except => [:admin_survey, :admin_question]
-      		# before_filter :authenticate_api_v1_user!, :except => [:admin_survey, :admin_question]
-			helper_method :survey, :participant, :question
+			before_filter :authenticate_user_from_token!, :except => [:admin_survey, :admin_question]
+      		before_filter :authenticate_api_v1_user!, :except => [:admin_survey, :admin_question]
+			helper_method :survey, :participant
 
 			def index
-				survey = Survey::Survey.active.first
-				# questions_array = Array.new
-				options = Hash.new
+				output = Array.new
 				questions = survey.questions
+				i = 0
 				questions.each do |question|
-					options = question.options
-				end 
-				render :json=> {:questions=>questions.as_json(:only=>[:id, :survey_id, :text]), :options=>options.as_json(:only=>[:id, :question_id, :text])}
+					midput = {question_id: question.id, question_text: question.text, options: []}
+					question.options.each do |option|
+						midput[:options].push(option.text)
+					end
+					output[i] = midput
+					i += 1
+				end
+
+				render json: output
+
 			end
 			
 			def admin_survey
-				my_survey = Survey::Survey.new do |survey|
-				  survey.name = params[:survey][:name]
-				  survey.description = params[:survey][:description]
-				  survey.active = params[:survey][:active]
-				end
-
-				question_1 = Survey::Question.new do |question|
+				question = Survey::Question.new do |question|
 					  question.text = params[:survey][:question_text]
 					  # by default when we don't specify the weight of a option
 					  # its value is equal to one
@@ -33,12 +33,12 @@ module Api
 					    Survey::Option.new(:text => params[:survey][:question_option2], :correct => true),
 					  ]
 				end
-				my_survey.questions = [question_1]
+				survey.questions.push(question)
 
-				if my_survey.save!
-					render json: my_survey
+				if survey.save!
+					render json: survey
 				else 
-					render json: my_survey.errors, status: :unprocessable_entity
+					render json: survey.errors, status: :unprocessable_entity
 				end
 			end 
 			
@@ -46,9 +46,10 @@ module Api
 			def create 
 				@attempt = Survey::Attempt.new(:survey => survey, :participant => participant)
 				@response = Survey::Option.find_by_text(params[:option][:text])
-				@attempt.answers = [Survey::Answer.new(:option => @response, :question => question)]
+				@question = Survey::Question.find_by_id(params[:option][:question_id])
+				@attempt.answers = [Survey::Answer.new(:option => @response, :question => @question)]
 				if @attempt.save
-					render :json=> {:success=>true, :response=>@response.text, :created_at=>@response.created_at, :response_count=>Survey::Answer.where(:question == question, :survey == survey).count}
+					render :json=> {:success=>true, :response=>@response.text, :created_at=>@response.created_at, :response_count=>Survey::Answer.where(:question == @question, :survey == survey).count}
 				else 
 					render json: @attempt.errors, status: :unprocessable_entity
 				end 	
@@ -84,10 +85,6 @@ module Api
 
 	  			def survey
 			    	@survey ||= Survey::Survey.active.first
-				end
-
-				def question
-			    	@question ||= Survey::Question.last
 				end
 
 			    def survey_params
