@@ -18,18 +18,14 @@ module Api
 					output[i] = midput
 					i += 1
 				end
-
 				render json: output
-
 			end
 			
 			def admin_survey
 				question = Survey::Question.new do |question|
 					  question.text = params[:survey][:question_text]
-					  # by default when we don't specify the weight of a option
-					  # its value is equal to one
 					  question.options = [
-					    Survey::Option.new(:text => params[:survey][:question_option1],  :correct => false),
+					    Survey::Option.new(:text => params[:survey][:question_option1], :correct => true),
 					    Survey::Option.new(:text => params[:survey][:question_option2], :correct => true),
 					  ]
 				end
@@ -42,7 +38,35 @@ module Api
 				end
 			end 
 			
+			def results
+				#Individual results first 
+				individual_results = Hash.new
+				responses = Array.new
+				attempts = Survey::Attempt.where(:survey => survey, :participant => participant)
+				survey.questions.each do |question|
+					attempts.each do |attempt|
+						attempt.answers.each do |answer|
+							if answer.question_id == question.id
+								responses.push(answer)
+							end 
+						end 
+					end 
+					responses.sort_by(&:created_at)
+					individual_results[question.text] = responses
+					responses =[]
+				end 
 
+				question_key = Hash.new
+				answer_key = Hash.new
+				survey.questions.each do |question|
+					question_key[question.id] = question.text
+					question.options.each do |option|
+						answer_key[option.id] = option.text
+					end
+				end 
+
+				render :json=> {:individual_results=>individual_results, :answer_key=>answer_key, :question_key=>question_key}
+			end 
 			def create 
 				@attempt = Survey::Attempt.new(:survey => survey, :participant => participant)
 				@response = Survey::Option.find_by_text(params[:option][:text])
@@ -55,11 +79,6 @@ module Api
 				end 	
 
 			end
-
-			def show
-		    	@survey = Survey.find(params[:id])
-		    	render json: @survey
-		  	end
 
 		    def update
 		    	@survey = Survey.find(params[:id])

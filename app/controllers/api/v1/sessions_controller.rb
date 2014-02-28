@@ -6,7 +6,7 @@ module Api
 	    
 	    def create
 	      # build_resource
-	      resource = User.find_for_database_authentication(:email => params[:user][:email]) z
+	      resource = User.find_for_database_authentication(:email => params[:user][:email])
 	      return invalid_login_attempt unless resource
 	      if resource.valid_password?(params[:user][:password])
 	        sign_in resource
