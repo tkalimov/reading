@@ -5,8 +5,10 @@ module Api
 			before_filter :authenticate_user_from_token!, :except => [:admin_survey, :admin_question]
       		before_filter :authenticate_api_v1_user!, :except => [:admin_survey, :admin_question]
 			helper_method :survey, :participant
+			include SurveysHelper
 
 			def index
+				#Returns list of questions and options 
 				output = Array.new
 				questions = survey.questions
 				i = 0
@@ -22,6 +24,7 @@ module Api
 			end
 			
 			def admin_survey
+				#Creates question 
 				question = Survey::Question.new do |question|
 					  question.text = params[:survey][:question_text]
 					  question.options = [
@@ -39,23 +42,26 @@ module Api
 			end 
 			
 			def results
-				#Individual results first 
-				individual_results = Hash.new
-				responses = Array.new
-				attempts = Survey::Attempt.where(:survey => survey, :participant => participant)
-				survey.questions.each do |question|
-					attempts.each do |attempt|
-						attempt.answers.each do |answer|
-							if answer.question_id == question.id
-								responses.push(answer)
-							end 
-						end 
-					end 
-					responses.sort_by(&:created_at)
-					individual_results[question.text] = responses
-					responses =[]
-				end 
+				#Returns individual results
+				# individual_results = Hash.new
+				# responses = Array.new
+				# attempts = Survey::Attempt.where(:survey => survey, :participant => participant)
+				# survey.questions.each do |question|
+				# 	attempts.each do |attempt|
+				# 		attempt.answers.each do |answer|
+				# 			if answer.question_id == question.id
+				# 				responses.push(answer)
+				# 			end 
+				# 		end 
+				# 	end 
+				# 	responses.sort_by(&:created_at)
+				# 	individual_results[question.text] = responses
+				# 	responses =[]
+				# end 
 
+				individual_results
+				vertical_results
+				neighborhood_results	
 				question_key = Hash.new
 				answer_key = Hash.new
 				survey.questions.each do |question|
@@ -64,8 +70,8 @@ module Api
 						answer_key[option.id] = option.text
 					end
 				end 
-
-				render :json=> {:individual_results=>individual_results, :answer_key=>answer_key, :question_key=>question_key}
+			
+				render :json=> {:individual_results=>individual_results, :vertical_results=>vertical_results, :neighborhood_results=>neighborhood_results, :answer_key=>answer_key, :question_key=>question_key}
 			end 
 			def create 
 				@attempt = Survey::Attempt.new(:survey => survey, :participant => participant)
