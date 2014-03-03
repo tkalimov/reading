@@ -14,6 +14,7 @@ AlphaApi::Application.routes.draw do
       match '/businesses/create_business', to: 'users#create_business', via: 'post'
       match '/surveys/admin_survey', to: 'surveys#admin_survey', via: 'post'
       match '/surveys/results', to: 'surveys#results', via: 'get'
+      match '/conversations/notebook', to: 'conversations#notebook', via: 'get'
     end
   end 
 end

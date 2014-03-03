@@ -11,6 +11,12 @@ module Api
         render json: @conversations.as_json(only: [:id, :content, :created_at], 
             include: { user: { only: [:id, :first_name, :last_name, :business_name] } })
       end
+      
+      def notebook
+        @notebook = Conversation.where(:user_id => current_api_v1_user)
+        @notebook.sort_by(&:created_at)
+        render json: @notebook
+      end 
 
       def create
         @conversation = current_api_v1_user.conversations.build(conversation_params)
@@ -38,10 +44,6 @@ module Api
         user       = user_token && User.find_by_authentication_token(user_token.to_s)
      
         if user
-          # Notice we are passing store false, so the user is not
-          # actually stored in the session and a token is needed
-          # for every request. If you want the token to work as a
-          # sign in token, you can simply remove store: false.
           sign_in user
         end
       end

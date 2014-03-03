@@ -35,11 +35,11 @@ module Api
       def find_business
         current_api_v1_user.update_attributes(user_params)
         zipCode = current_api_v1_user.business_zipcode
-          apiKey = "AIzaSyCs09hsOJdkcaY5srhstDee1V09s-pYnl4" 
-          apiKey2 = 10000005659 
-          businessName = current_api_v1_user.business_name
-          geocodeURL = "https://maps.googleapis.com/maps/api/geocode/json?"
-          geocodeResponse = HTTParty.get(geocodeURL, {query: {address: zipCode, sensor: 'false', key: apiKey}})
+        apiKey = "AIzaSyCs09hsOJdkcaY5srhstDee1V09s-pYnl4" 
+        apiKey2 = 10000005659 
+        businessName = current_api_v1_user.business_name
+        geocodeURL = "https://maps.googleapis.com/maps/api/geocode/json?"
+        geocodeResponse = HTTParty.get(geocodeURL, {query: {address: zipCode, sensor: 'false', key: apiKey}})
         latitude = geocodeResponse['results'][0]['geometry']['location']['lat']
         longitude = geocodeResponse['results'][0]['geometry']['location']['lng']
         coordinates = latitude.to_s + ',' + longitude.to_s
