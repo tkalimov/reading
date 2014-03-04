@@ -59,9 +59,9 @@ namespace :db do
       category2 = "Vertical"
       category3 = "Local"
       users.each do |user| 
-        user.conversations.create!(content: Faker::Lorem.sentence(5), category: category1)
-        user.conversations.create!(content: Faker::Lorem.sentence(5), category: category2)
-        user.conversations.create!(content: Faker::Lorem.sentence(5), category: category3)
+        user.conversations.create!(content: Faker::Lorem.sentence(5), category: category1, created_at:rand(6.months).ago)
+        user.conversations.create!(content: Faker::Lorem.sentence(5), category: category2, created_at:rand(6.months).ago)
+        user.conversations.create!(content: Faker::Lorem.sentence(5), category: category3, created_at:rand(6.months).ago)
       end 
     end
     
@@ -100,9 +100,9 @@ namespace :db do
     users.each do |user|
       attempt = Survey::Attempt.new(:survey => my_survey, :participant => user)
       response1 = Survey::Option.find_by_id(rand(1..2))
-      answer1 = Survey::Answer.new(:option=>response1, :question=> question_1)
+      answer1 = Survey::Answer.new(:option=>response1, :question=> question_1, created_at:rand(6.months).ago)
       response2 = Survey::Option.find_by_id(rand(3..4))
-      answer2 = Survey::Answer.new(:option=>response2, :question=> question_2)
+      answer2 = Survey::Answer.new(:option=>response2, :question=> question_2, created_at:rand(6.months).ago)
       attempt.answers = [answer1, answer2]
       attempt.save
     end  
