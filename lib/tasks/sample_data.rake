@@ -100,9 +100,9 @@ namespace :db do
     users.each do |user|
       attempt = Survey::Attempt.new(:survey => my_survey, :participant => user)
       response1 = Survey::Option.find_by_id(rand(1..2))
-      answer1 = Survey::Answer.new(:option=>response1, :question=> question_1, created_at:rand(6.months).ago)
+      answer1 = Survey::Answer.new(:option=>response1, :question=> question_1, created_at:rand(3.weeks).ago)
       response2 = Survey::Option.find_by_id(rand(3..4))
-      answer2 = Survey::Answer.new(:option=>response2, :question=> question_2, created_at:rand(6.months).ago)
+      answer2 = Survey::Answer.new(:option=>response2, :question=> question_2, created_at:rand(3.weeks).ago)
       attempt.answers = [answer1, answer2]
       attempt.save
     end  

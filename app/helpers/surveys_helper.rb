@@ -23,6 +23,7 @@ module SurveysHelper
 		vertical_results = Hash.new
 		responses = Array.new 
 		survey.questions.each do |question|
+			
 			participant.business_verticals.each do |vertical|
 				competitors = User.where("'#{vertical}' = ANY (business_verticals)")
 				competitors.each do |competitor|
@@ -30,6 +31,7 @@ module SurveysHelper
 					attempts.each do |attempt|
 						attempt.answers.each do |answer|
 							if answer.question_id == question.id
+			
 								responses.push(answer)
 							end 
 						end 
