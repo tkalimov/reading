@@ -42,23 +42,7 @@ module Api
 			end 
 			
 			def results
-				#Returns individual results
-				# individual_results = Hash.new
-				# responses = Array.new
-				# attempts = Survey::Attempt.where(:survey => survey, :participant => participant)
-				# survey.questions.each do |question|
-				# 	attempts.each do |attempt|
-				# 		attempt.answers.each do |answer|
-				# 			if answer.question_id == question.id
-				# 				responses.push(answer)
-				# 			end 
-				# 		end 
-				# 	end 
-				# 	responses.sort_by(&:created_at)
-				# 	individual_results[question.text] = responses
-				# 	responses =[]
-				# end 
-
+				#Returns all answers to questions for individual companies, vertical, and neighborhood
 				individual_results
 				vertical_results
 				neighborhood_results	
@@ -74,6 +58,7 @@ module Api
 				render :json=> {:individual_results=>individual_results, :vertical_results=>vertical_results, :neighborhood_results=>neighborhood_results, :answer_key=>answer_key, :question_key=>question_key}
 			end 
 			def create 
+				#Creates answer to a question 
 				@attempt = Survey::Attempt.new(:survey => survey, :participant => participant)
 				@response = Survey::Option.find_by_text(params[:option][:text])
 				@question = Survey::Question.find_by_id(params[:option][:question_id])
