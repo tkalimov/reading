@@ -19,28 +19,36 @@ module SurveysHelper
 		return individual_results
 	end 
 
+#Model that stores all of the responses for verticals 
+#It should be able to pull -- for a given question, a timelien 
+
 	def vertical_results
 		vertical_results = Hash.new
-		responses = Array.new 
+		all_dates = Array.new
+		Survey::Answer.all.each do |answer|
+			all_dates.push(answer.created_at.strftime("%m/%d/%Y"))
+		end
+		unique_dates = all_dates.uniq
 		survey.questions.each do |question|
-			
-			participant.business_verticals.each do |vertical|
-				competitors = User.where("'#{vertical}' = ANY (business_verticals)")
-				competitors.each do |competitor|
-					attempts = Survey::Attempt.where(:survey => survey, :participant => competitor)
-					attempts.each do |attempt|
-						attempt.answers.each do |answer|
-							if answer.question_id == question.id
-			
-								responses.push(answer)
+			dated_results = Hash.new
+			unique_dates.each do |date|
+				responses = Array.new
+				participant.business_verticals.each do |vertical|
+					competitors = User.where("'#{vertical}' = ANY (business_verticals)")
+					competitors.each do |competitor|
+						attempts = Survey::Attempt.where(:survey => survey, :participant => competitor)
+						attempts.each do |attempt|
+							attempt.answers.each do |answer|
+								if answer.question_id == question.id && date == answer.created_at.strftime("%m/%d/%Y")
+									responses.push(answer)
+								end 
 							end 
 						end 
-					end 
-				end	
-			end 
-			responses.sort_by(&:created_at)
-			vertical_results[question.text] = responses
-			responses =[]	
+					end	
+				end 
+				dated_results[date] = responses
+			end
+			vertical_results[question.text] = dated_results 
 		end 
 		return vertical_results
 	end 

@@ -1,6 +1,6 @@
 GIT
-  remote: git://github.com/runtimerevolution/survey.git
-  revision: 6086740dffd3f88215c402658c6eb43e04b8e4c3
+  remote: git://github.com/tkalimov/survey.git
+  revision: 7383d13a1586c5b778316f68f50b5f835d0f9445
   specs:
     survey (0.1)
       rails (>= 3.2.6, < 5)
