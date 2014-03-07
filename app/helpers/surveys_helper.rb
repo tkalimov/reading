@@ -1,21 +1,21 @@
 module SurveysHelper
 	
+	#INDIVIDUAL RESULTS ONLY LAST 7 DAYS 	
+	
 	def individual_results
 		individual_results = Hash.new
 		responses = Array.new
 		attempts = Survey::Attempt.where(:survey => survey, :participant => participant)
-		survey.questions.each do |question|
 			attempts.each do |attempt|
-				attempt.answers.each do |answer|
-					if answer.question_id == question.id
-						responses.push(answer)
+				attempt.answers.where("created_at >= ?", 8.days.ago).each do |answer|
+					if individual_results[answer.question_id]
+						individual_results[answer.question_id][answer.date] = answer.option_id
+						#NEED TO FIGURE OUT WHAT TO DO IF SOMEONE RESPONDS TO THE QUESTION MULTIPLE TIMES IN ONE DAY 
+					else 
+						individual_results[answer.question_id] = {answer.date => answer.option_id}
 					end 
 				end 
 			end 
-			responses.sort_by(&:created_at)
-			individual_results[question.text] = responses
-			responses =[]
-		end 
 		return individual_results
 	end 
 
