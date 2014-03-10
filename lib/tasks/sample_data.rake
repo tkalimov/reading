@@ -27,6 +27,11 @@ namespace :db do
       content = Faker::Lorem.sentence(5)
       users.each { |user| user.conversations.create!(content: content) }
     end
+
+    30.times do 
+      content = Faker::Lorem.sentence(5)
+      User.first.conversations.create!(content:content)
+    end 
     
     my_survey = Survey::Survey.new do |survey|
       survey.name = "Test survey" 
@@ -68,6 +73,5 @@ end
 
 # $ bundle exec rake db:reset
 # $ bundle exec rake db:populate
-# $ bundle exec rake test:prepare
 
 
