@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140213192328) do
+ActiveRecord::Schema.define(version: 20140304194616) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(version: 20140213192328) do
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "category"
   end
 
   add_index "conversations", ["user_id", "created_at"], name: "index_conversations_on_user_id_and_created_at", using: :btree
@@ -32,6 +33,7 @@ ActiveRecord::Schema.define(version: 20140213192328) do
     t.boolean  "correct"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "date"
   end
 
   create_table "survey_attempts", force: true do |t|
@@ -93,10 +95,13 @@ ActiveRecord::Schema.define(version: 20140213192328) do
     t.datetime "avatar_updated_at"
     t.string   "provider"
     t.string   "uid"
+    t.string   "business_neighborhood"
+    t.string   "business_verticals",                               array: true
   end
 
   add_index "users", ["authentication_token"], name: "index_users_on_authentication_token", unique: true, using: :btree
   add_index "users", ["business_address"], name: "index_users_on_business_address", unique: true, using: :btree
+  add_index "users", ["business_verticals"], name: "index_users_on_business_verticals", using: :gin
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 

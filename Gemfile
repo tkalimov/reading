@@ -9,7 +9,7 @@ gem 'unicorn'
 gem 'rails_12factor'
 gem 'devise'
 gem 'rack-cors', :require => 'rack/cors'
-gem 'survey', :git => 'git://github.com/runtimerevolution/survey.git'
+gem 'survey', :git => 'git://github.com/tkalimov/survey.git' #Forked so I can customize the Answer model for a simplified_date
 gem 'paperclip'
 gem 'aws-sdk'
 gem 'omniauth-facebook'

@@ -8,19 +8,18 @@ module Api
 
       def index
         @conversations = Conversation.all
-        render json: @conversations.as_json(only: [:id, :content, :created_at], 
+        render json: @conversations.as_json(only: [:id, :content, :created_at, :category], 
             include: { user: { only: [:id, :first_name, :last_name, :business_name] } })
       end
       
       def notebook
-        @notebook = Conversation.where(:user_id => current_api_v1_user)
+        @notebook = Conversation.where(:user_id => current_api_v1_user, :category=> "Personal")
         @notebook.sort_by(&:created_at)
         render json: @notebook
       end 
 
       def create
         @conversation = current_api_v1_user.conversations.build(conversation_params)
-
         if @conversation.save
           render json: @conversation, status: :created
         else
@@ -36,7 +35,7 @@ module Api
       private
 
         def conversation_params
-          params.require(:conversation).permit(:content)
+          params.require(:conversation).permit(:content, :category)
         end
 
         def authenticate_user_from_token!
