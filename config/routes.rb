@@ -15,6 +15,9 @@ AlphaApi::Application.routes.draw do
       match '/surveys/admin_survey', to: 'surveys#admin_survey', via: 'post'
       match '/surveys/results', to: 'surveys#results', via: 'get'
       match '/conversations/notebook', to: 'conversations#notebook', via: 'get'
+      match '/pocket/pocket_start', to: 'users#pocket_start', via: 'get'
+      match '/pocket/pocket_middle', to: 'users#pocket_middle', via: 'get'
+      match '/pocket/pocket_list', to: 'users#pocket_list', via: 'get'
     end
   end 
 end
