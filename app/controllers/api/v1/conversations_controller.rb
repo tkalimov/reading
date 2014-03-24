@@ -9,7 +9,7 @@ module Api
       def index
         @conversations = Conversation.all
         render json: @conversations.as_json(only: [:id, :content, :created_at, :category], 
-            include: { user: { only: [:id, :first_name, :last_name, :business_name] } })
+            include: { user: { only: [:id, :first_name, :last_name] } })
       end
       
       def notebook

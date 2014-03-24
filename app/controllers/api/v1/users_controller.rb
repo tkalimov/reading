@@ -2,26 +2,26 @@ module Api
   module V1 
     class UsersController < ApplicationController
       after_filter :cors_set_access_control_headers      
-      # before_filter :authenticate_user_from_token!#, :except => [:find_business ]
-      # before_filter :authenticate_api_v1_user! #, :except => [:find_business, :user_params ]
+      # before_filter :authenticate_user_from_token!
+      # before_filter :authenticate_api_v1_user! å
 
       def index      
         #Show all users 
         @users = User.all
-        render json: @users.as_json(only: [:id, :first_name, :last_name, :email, :business_name, :business_verticals, :business_neighborhood, :created_at, :sign_in_count, :current_sign_in_at, :last_sign_in_at])
+        render json: @users.as_json(only: [:id, :first_name, :last_name, :email, :created_at, :sign_in_count, :current_sign_in_at, :last_sign_in_at])
       end
 
       def show
         #Show single user
         @user = User.find(params[:id])
-        render json: @users.as_json(only: [:id, :first_name, :last_name, :email, :business_name, :business_verticals, :business_neighborhood, :created_at, :sign_in_count, :current_sign_in_at, :last_sign_in_at])
+        render json: @users.as_json(only: [:id, :first_name, :last_name, :email, :created_at, :sign_in_count, :current_sign_in_at, :last_sign_in_at])
       end
       
       def update
         #Update single user
         @user = User.find(params[:id])
         if @user.update_attributes(user_params)
-          render json: @user.as_json(only: [:id, :first_name, :last_name, :email, :business_name, :business_verticals, :business_neighborhood, :created_at, :sign_in_count, :current_sign_in_at, :last_sign_in_at, :authentication_token])
+          render json: @user.as_json(only: [:id, :first_name, :last_name, :email, :created_at, :sign_in_count, :current_sign_in_at, :last_sign_in_at, :authentication_token])
           sign_in @user
         else
           render json: @user.errors, status: :unprocessable_entity
@@ -71,7 +71,7 @@ module Api
       private 
       
       def user_params
-          params.require(:user).permit(:first_name, :last_name, :email, :password, :business_name, :avatar, :business_zipcode, :business_address, :business_neighborhood, :business_verticals => [])
+          params.require(:user).permit(:first_name, :last_name, :email, :password)
       end 
       
       def authenticate_user_from_token!
