@@ -1,6 +1,5 @@
 class User < ActiveRecord::Base
   has_many :conversations, dependent: :destroy 
-  has_surveys
   has_attached_file :avatar, styles: {thumb: '100x100>', square: '200x200#', medium: '300x300>'}
   validates_attachment_content_type :avatar, :content_type => /\Aimage\/.*\Z/
   devise :database_authenticatable, :registerable,

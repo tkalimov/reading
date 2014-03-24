@@ -21,7 +21,6 @@ module AlphaApi
     
     # Include full middleware
     # config.api_only = false
-    # config.middleware.use "Cors"
     
     config.middleware.use Rack::Cors do
       allow do
@@ -32,5 +31,6 @@ module AlphaApi
     config.middleware.use Rack::Session::Cookie
     config.middleware.insert_before Warden::Manager, Rack::Cors
     config.secret_key_base = 'blipblapblup'
+    # config.middleware.use ActionDispatch::Cookies
   end
 end

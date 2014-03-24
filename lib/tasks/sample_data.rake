@@ -126,12 +126,6 @@ namespace :db do
     end   
   end
 end
-<<<<<<< HEAD
-
 
 # $ bundle exec rake db:reset
 # $ bundle exec rake db:populate
-
-
-=======
->>>>>>> db0c26f0060bb77330fd40eb362b46e7e40bb7dd

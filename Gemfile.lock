@@ -1,11 +1,3 @@
-GIT
-  remote: git://github.com/tkalimov/survey.git
-  revision: 7383d13a1586c5b778316f68f50b5f835d0f9445
-  specs:
-    survey (0.1)
-      rails (>= 3.2.6, < 5)
-      railties (>= 3.2.6, < 5)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -194,7 +186,7 @@ PLATFORMS
 
 DEPENDENCIES
   aws-sdk
-  debugger (~> 1.6.5)
+  debugger
   devise
   factory_girl_rails
   faker
@@ -210,5 +202,4 @@ DEPENDENCIES
   rails-api
   rails_12factor
   rspec-rails
-  survey!
   unicorn

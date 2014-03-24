@@ -35,31 +35,6 @@ module Api
         end 
       end
 
-      def find_business
-        current_api_v1_user.update_attributes(user_params)
-        zipCode = current_api_v1_user.business_zipcode
-        apiKey = "AIzaSyCs09hsOJdkcaY5srhstDee1V09s-pYnl4" 
-        apiKey2 = 10000005659 
-        businessName = current_api_v1_user.business_name
-        geocodeURL = "https://maps.googleapis.com/maps/api/geocode/json?"
-        geocodeResponse = HTTParty.get(geocodeURL, {query: {address: zipCode, sensor: 'false', key: apiKey}})
-        latitude = geocodeResponse['results'][0]['geometry']['location']['lat']
-        longitude = geocodeResponse['results'][0]['geometry']['location']['lng']
-        coordinates = latitude.to_s + ',' + longitude.to_s
-          
-          placesURL = "https://maps.googleapis.com/maps/api/place/textsearch/json?"
-        placesResponse = HTTParty.get(placesURL, {query: {location: coordinates, radius: '10000', sensor: 'false', query: businessName, key: apiKey}})
-        render json: placesResponse
-      end
-      
-      def create_business
-        @user = current_api_v1_user
-        if @user.update_attributes(user_params)
-          render json: @user.as_json(only: [:id, :first_name, :last_name, :email, :business_name, :business_address, :business_zipcode, :created_at, :sign_in_count, :current_sign_in_at, :last_sign_in_at, :authentication_token])
-        else
-          render json: @user.errors, status: :unprocessable_entity
-        end
-      end
 
       def pocket_start
         pocketURL = 'https://getpocket.com/v3/oauth/request'

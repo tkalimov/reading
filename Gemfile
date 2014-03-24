@@ -9,7 +9,6 @@ gem 'unicorn'
 gem 'rails_12factor'
 gem 'devise'
 gem 'rack-cors', :require => 'rack/cors'
-gem 'survey', :git => 'git://github.com/tkalimov/survey.git' #Forked so I can customize the Answer model for a simplified_date
 gem 'paperclip'
 gem 'aws-sdk'
 gem 'omniauth-facebook'
@@ -18,11 +17,11 @@ gem "omniauth-google-oauth2"
 gem 'figaro'
 gem 'httparty'
 gem 'faker'
+gem 'debugger'
 
 group :development, :test do
   gem 'rspec-rails' 
   gem 'factory_girl_rails'
-  gem "debugger", "~> 1.6.5"
   # gem 'guard-rspec', '2.5.0'
   # gem 'spork-rails', '4.0.0'
   # gem 'guard-spork', '1.5.0'
@@ -35,14 +34,4 @@ group :development, :test do
   # gem 'growl', '1.0.3'
 end
 
-# To use ActiveModel has_secure_password
-# gem 'bcrypt-ruby', '~> 3.0.0'
 
-# To use Jbuilder templates for JSON
-# gem 'jbuilder'
-
-# Deploy with Capistrano
-# gem 'capistrano', :group => :development
-
-# To use debugger
-# gem 'ruby-debug19', :require => 'ruby-debug'
