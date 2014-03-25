@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
   validates_attachment_content_type :avatar, :content_type => /\Aimage\/.*\Z/
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, 
-         :omniauthable, :omniauth_providers => [:linkedin, :google_oauth2, :facebook]
+         :omniauthable, :omniauth_providers => [:linkedin, :google_oauth2, :facebook, :khan_academy]
   before_save :ensure_authentication_token
   validates :first_name, presence: true
   validates :last_name, presence: true

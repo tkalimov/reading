@@ -89,6 +89,7 @@ GEM
     multipart-post (2.0.0)
     nokogiri (1.6.1)
       mini_portile (~> 0.5.0)
+    oauth (0.4.7)
     oauth2 (0.9.3)
       faraday (>= 0.8, < 0.10)
       jwt (~> 0.1.8)
@@ -103,6 +104,11 @@ GEM
     omniauth-google-oauth2 (0.2.2)
       omniauth (~> 1.0)
       omniauth-oauth2
+    omniauth-khan-academy (0.1.0)
+      activesupport
+      multi_json
+      oauth
+      omniauth (~> 1.0)
     omniauth-linkedin-oauth2 (0.1.5)
       omniauth (~> 1.0)
       omniauth-oauth2
@@ -197,6 +203,7 @@ DEPENDENCIES
   httparty
   omniauth-facebook
   omniauth-google-oauth2
+  omniauth-khan-academy
   omniauth-linkedin-oauth2
   paperclip
   pg

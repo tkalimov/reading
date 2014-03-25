@@ -15,6 +15,7 @@ gem 'aws-sdk'
 gem 'omniauth-facebook'
 gem 'omniauth-linkedin-oauth2'
 gem "omniauth-google-oauth2"
+gem 'omniauth-khan-academy'
 gem 'figaro'
 gem 'httparty'
 gem 'faker'

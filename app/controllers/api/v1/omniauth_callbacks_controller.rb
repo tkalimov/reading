@@ -4,6 +4,7 @@ module Api
 			
 			def all
 			    @user = User.find_for_oauth(request.env["omniauth.auth"]) 
+			    debugger
 				$google_access_token = request.env["omniauth.auth"].credentials['token']
 			    if @user.persisted?
 			      sign_in @user, :event => :authentication #this will throw if @user is not activated
@@ -15,7 +16,8 @@ module Api
 
 		    alias_method :linkedin, :all
 			alias_method :google_oauth2, :all
-			alias_method :facebok, :all
+			alias_method :facebook, :all
+			alias_method :khan_academy, :all
 		end
 	end 
 end 
