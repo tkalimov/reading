@@ -1,10 +1,8 @@
 module Api
   module V1
 		class OmniauthCallbacksController < Devise::OmniauthCallbacksController
-			
 			def all
 			    @user = User.find_for_oauth(request.env["omniauth.auth"]) 
-			    debugger
 				$google_access_token = request.env["omniauth.auth"].credentials['token']
 			    if @user.persisted?
 			      sign_in @user, :event => :authentication #this will throw if @user is not activated
