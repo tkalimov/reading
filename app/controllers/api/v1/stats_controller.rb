@@ -33,9 +33,44 @@ module Api
 	        	
 	        	render :json => {:last_week=>words_last_week, :last_month=>words_last_month, :last_year =>words_last_year}
 	      	end 
-
+		
 			def youtube
-					# YouTube V3 API
+				# Code for YouTube V2 API
+				index = 1
+				i = 0
+				user = User.first 
+				catch (:done) do 
+					while index < 10000 do
+    					historyFeed = HTTParty.get('https://gdata.youtube.com/feeds/api/users/default/watch_history', {query: {v: 2, alt: 'json', access_token: $google_access_token, 'max-results' => 50, 'start-index' => index}})
+
+						if historyFeed['feed']['entry']
+							if user.videos.first
+								throw :done if user.videos.first.watched == historyFeed['feed']['entry'][0]['published']['$t']
+							end 
+
+			    			historyFeed.parsed_response['feed']['entry'].each do |entry|
+			    				if entry['media$group']['yt$duration']  # videos that have been suspended no longer show duration or category so need to be accounted for 
+			    					begin
+			    						user.videos.create!(title: entry['title']['$t'], watched: entry['published']['$t'], category: entry['category'][0]['label'], length: entry['media$group']['yt$duration']['seconds'].to_i, publisher: entry['media$group']['media$credit'][0]['yt$display'])
+			    					rescue 
+			    					end 
+			    				else
+			    					begin  
+			    						user.videos.create!(title: entry['title']['$t'], watched: entry['published']['$t'], category: 'uncategorized', length: 0, publisher: entry['media$group']['media$credit'][0]['yt$display'])
+			    					rescue 
+			    					end 
+			    				end 
+			    			end
+			    			index += 50
+			    		else 
+			    			throw :done 
+			    		end 
+				    end 
+			    		# change term to label
+	    		end 
+	    		render :json => {:total_watched => user.videos.length, :stats => user.video_stats }
+
+	    		# Code for YouTube V3 API
 					# channelsURL = 'https://www.googleapis.com/youtube/v3/channels'
 					# ytChannels = HTTParty.get(channelsURL, {query: {part: 'contentDetails', mine: 'true', access_token: $google_access_token}})
 					# watchHistoryID = ytChannels.parsed_response['items'][0]['contentDetails']['relatedPlaylists']['watchHistory'] 
@@ -48,26 +83,6 @@ module Api
 					#Category ID for each video 
 					#{}"contentDetails": {
 	    			#	"duration": "PT13M33S",
-				index = 1
-				i = 0
-				user = User.first 
-				while index < 10000 do
-    				historyFeed = HTTParty.get('https://gdata.youtube.com/feeds/api/users/default/watch_history', {query: {v: 2, alt: 'json', access_token: $google_access_token, 'max-results' => 50, 'start-index' => index}})
-
-						if historyFeed['feed']['entry']
-			    			historyFeed.parsed_response['feed']['entry'].each do |entry|
-			    				if entry['media$group']['yt$duration']  # videos that have been suspended no longer show duration so need to be accounted for 
-			    					user.videos.create(title: entry['title']['$t'], watched: entry['published']['$t'], category: entry['category'][0]['term'], length: entry['media$group']['yt$duration']['seconds'].to_i, publisher: entry['media$group']['media$credit'][0]['yt$display'])
-			    				else 
-			    					user.videos.create(title: entry['title']['$t'], watched: entry['published']['$t'], category: entry['category'][0]['term'], publisher: entry['media$group']['media$credit'][0]['yt$display'])
-			    				end 
-			    			end
-			    			index += 50
-			    		else 
-			    			index =10001
-			    		end 
-	    		end 
-	    		render :json => {:total_watched => user.videos.length }
 			end
 		end
 	end

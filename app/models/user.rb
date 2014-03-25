@@ -18,6 +18,19 @@ class User < ActiveRecord::Base
     end
   end
 
+  def video_stats
+    a = Hash.new()
+    self.videos.each do |video|
+      if a[video.category] != nil
+        a[video.category][:videos_watched] += 1
+        a[video.category][:seconds_watched] += video.length
+      else
+        a[video.category] = {videos_watched: 1, seconds_watched: video.length}
+      end 
+    end 
+    return a
+  end 
+
   def self.find_for_oauth(auth)
     where(auth.slice(:provider, :uid)).first_or_create do |user|
       user.provider = auth.provider
