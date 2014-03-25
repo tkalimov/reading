@@ -229,7 +229,10 @@ Devise.setup do |config|
   # up on your models and hooks.
   config.omniauth :facebook, "267158353447146", "fd55c9241c162ce950171b67bfe598c2"
   config.omniauth :linkedin,  "771xbh4dq42vil", "L0UjrlXJWctttOTX"
-  config.omniauth :google_oauth2,  "3397687832.apps.googleusercontent.com", "pPejwNZgPqBGWwDu9k_TkLK7"
+  config.omniauth :google_oauth2,  "3397687832.apps.googleusercontent.com",  "pPejwNZgPqBGWwDu9k_TkLK7", 
+    {
+      :scope => "userinfo.email, userinfo.profile, youtube"
+    }
   
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', :scope => 'user,public_repo'
 

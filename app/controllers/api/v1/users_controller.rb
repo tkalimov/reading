@@ -3,7 +3,7 @@ module Api
     class UsersController < ApplicationController
       after_filter :cors_set_access_control_headers      
       # before_filter :authenticate_user_from_token!
-      # before_filter :authenticate_api_v1_user! å
+      # before_filter :authenticate_api_v1_user!
 
       def index      
         #Show all users 
@@ -47,25 +47,26 @@ module Api
           authorizeURL = 'https://getpocket.com/v3/oauth/authorize' 
           user_response = HTTParty.post(authorizeURL, :body => {consumer_key: "25394-e72c8667a8a092220ef3ea2e", code: $pocket_start.parsed_response["code"]}, :headers => {'X-Accept' => 'application/json'})
             $user_access_token = user_response.parsed_response['access_token']
-          
       end 
       
       def pocket_list
         pocketAPI = 'https://getpocket.com/v3/get'
-        pocketList = HTTParty.post(pocketAPI, :body => {consumer_key: "25394-e72c8667a8a092220ef3ea2e", access_token: "e7130a52-3403-fa56-cf2a-6cb2ec", state: 'all'})
-        archived_words = 0
-        unread_words = 0 
-        total_words = 0
+        pocketList = HTTParty.post(pocketAPI, :body => {consumer_key: "25394-e72c8667a8a092220ef3ea2e", access_token: $user_access_token, state: 'all'})
+        words_last_week = 0
+        words_last_month = 0
+        words_last_year = 0 
+
         pocketList['list'].values.each do |item|
-          if item['time_read'].to_i > 0
-            archived_words +=  item['word_count'].to_i
-          else 
-            unread_words += item['word_count'].to_i
+          if Time.at(item['time_read'].to_i) > 1.week.ago.utc
+            words_last_week +=  item['word_count'].to_i
+          elsif Time.at(item['time_read'].to_i) > 1.month.ago.utc
+            words_last_month += item['word_count'].to_i
+          elsif Time.at(item['time_read'].to_i) > 1.year.ago.utc
+            words_last_year += item['word_count'].to_i
           end 
-          total_words += item['word_count'].to_i 
         end 
 
-         render :json => {:archived=>archived_words, :unread=>unread_words, :total =>total_words}
+         render :json => {:last_week=>words_last_week, :last_month=>words_last_month, :last_year =>words_last_year}
       end 
 
       private 
