@@ -41,22 +41,24 @@ module Api
 				user = User.first 
 				catch (:done) do 
 					while index < 10000 do
-    					historyFeed = HTTParty.get('https://gdata.youtube.com/feeds/api/users/default/watch_history', {query: {v: 2, alt: 'json', access_token: $google_access_token, 'max-results' => 50, 'start-index' => index}})
+    					historyFeed = HTTParty.get('https://gdata.youtube.com/feeds/api/users/default/watch_history', {query: {v: 2, alt: 'json', access_token: $access_token, 'max-results' => 50, 'start-index' => index}})
 
 						if historyFeed['feed']['entry']
 							if user.videos.first
+								#checking to see if the feed has changed since last time it was pulled 
+								#First video doesn't work and needs to be fixed -- lookup first video in feed in database with that same watched time 
 								throw :done if user.videos.first.watched == historyFeed['feed']['entry'][0]['published']['$t']
 							end 
-
+							
 			    			historyFeed.parsed_response['feed']['entry'].each do |entry|
 			    				if entry['media$group']['yt$duration']  # videos that have been suspended no longer show duration or category so need to be accounted for 
 			    					begin
-			    						user.videos.create!(title: entry['title']['$t'], watched: entry['published']['$t'], category: entry['category'][0]['label'], length: entry['media$group']['yt$duration']['seconds'].to_i, publisher: entry['media$group']['media$credit'][0]['yt$display'])
+			    						user.videos.create!(title: entry['title']['$t'], watched: entry['published']['$t'], category: entry['category'][0]['label'], length: entry['media$group']['yt$duration']['seconds'].to_i, publisher: entry['media$group']['media$credit'][0]['yt$display'], source_video_id: entry['media$group']['yt$videoid']['$t'], source: 'YouTube')
 			    					rescue 
 			    					end 
 			    				else
 			    					begin  
-			    						user.videos.create!(title: entry['title']['$t'], watched: entry['published']['$t'], category: 'uncategorized', length: 0, publisher: entry['media$group']['media$credit'][0]['yt$display'])
+			    						user.videos.create!(title: entry['title']['$t'], watched: entry['published']['$t'], category: 'uncategorized', length: 0, publisher: entry['media$group']['media$credit'][0]['yt$display'], source_video_id: entry['media$group']['yt$videoid']['$t'], source: 'YouTube')
 			    					rescue 
 			    					end 
 			    				end 
@@ -66,7 +68,6 @@ module Api
 			    			throw :done 
 			    		end 
 				    end 
-			    		# change term to label
 	    		end 
 	    		render :json => {:total_watched => user.videos.length, :stats => user.video_stats }
 
@@ -84,20 +85,50 @@ module Api
 					#{}"contentDetails": {
 	    			#	"duration": "PT13M33S",
 			end
+			
 
 			def khan_auth
-				# khanAuthUrl = 'https://www.khanacademy.org/api/auth/request_token'
-				# debugger
-				# HTTParty.get('khanAuthURL', :body => {oauth_consumer_key: ENV['KHAN_CONSUMER_KEY'], oauth_nonce: SecureRandom.base64, oauth_version: '1.0', oauth_signature: TBD, oauth_signature_method: "HMAC-SHA1", oauth_timestamp: Time.now })
-				# render :json => {:test=>User.first}
+				def khan_stats(type)
+					oauth_nonce = SecureRandom.hex
+					oauth_timestamp = Time.now.to_i
+					url = "https://www.khanacademy.org/api/v1/user#{type}"
+					encoded_url = CGI::escape(url)
+					param_string = CGI::escape("oauth_consumer_key=#{ENV['KHAN_CONSUMER_KEY']}&oauth_nonce=#{oauth_nonce}&oauth_signature_method=HMAC-SHA1&oauth_timestamp=#{oauth_timestamp}&oauth_token=#{$access_token}&oauth_version=1.0")
+					signature_string = "GET&#{encoded_url}&" + param_string
+					key = CGI::escape(ENV['KHAN_CONSUMER_SECRET']) + '&' + CGI::escape($secret_token) 
 
-				# HTTParty.get('https://www.khanacademy.org/api/v1/user/videos', :query => {oauth_token: 't4598593106214912', oauth_consumer_key: ENV['KHAN_CONSUMER_KEY'], oauth_nonce: SecureRandom.base64, oauth_version: '1.0', oauth_signature: instance, oauth_signature_method: "HMAC-SHA1", oauth_timestamp: Time.now})
-					
-				# authHeader = "oauth_consumer_key='#{ENV['KHAN_CONSUMER_KEY']}', oauth_token='t4598593106214912', oauth_nonce='kllo9940pd9333jh', oauth_timestamp='1191242096', oauth_signature_method='HMAC-SHA1', oauth_version='1.0', oauth_signature='tR3%2BTy81lMeYAr%2FFid0kMTYa%2FWM%3D'"
+					#BUG 
+					#Encoding is generating a \n at the end of the signature that shouldn't be there so I manually subtract it here: 	
+					oauth_signature = Base64.encode64("#{OpenSSL::HMAC.digest('sha1',key, signature_string)}")[0..-2]
+					auth_header = "OAuth oauth_consumer_key=\"#{CGI::escape(ENV['KHAN_CONSUMER_KEY'])}\", oauth_nonce=\"#{CGI::escape(oauth_nonce)}\", oauth_signature=\"#{CGI::escape(oauth_signature)}\", oauth_signature_method=\"HMAC-SHA1\", oauth_timestamp=\"#{oauth_timestamp}\", oauth_token=\"#{CGI::escape($access_token)}\", oauth_version=\"1.0\""
 
-				# key = 'key'
-				# digest = OpenSSL::Digest.new('sha1')
-				# instance = OpenSSL::HMAC.new('t4598593106214912', digest)
+					output = HTTParty.get(url, :headers => {'Authorization' => auth_header})
+				end 
+				user_info = khan_stats('')
+				videos = khan_stats('/videos')
+
+				debugger
+				# exercises = khan_stats('/exercises')
+				
+
+				user = User.first 
+				catch (:done) do 
+					#change migration to be last_watched, add seconds_watcehd
+
+					videos.each do |video|
+						if user.videos.first
+							#checking to see if the feed has changed since last time it was pulled 
+							#First video doesn't work and needs to be fixed -- lookup first video in feed in database with that same watched time 
+							throw :done if user.videos.first.watched == videos[0]['last_watched']
+						end 
+						
+						user.videos.create!(title: video['video']['title'], time_watched: video['last_watched'], category: video['video']['keywords'], length: video['duration'], seconds_watched: video['seconds_watched'], source_video_id: video['video']['youtube_id'], source: 'Khan Academy')	
+					end 							
+	    				throw :done 
+			    		
+	    		end 
+				
+				render :json => {:videos=>videos, :user_info=>user_info}
 			end 
 		end
 	end
