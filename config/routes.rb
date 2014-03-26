@@ -15,5 +15,6 @@ AlphaApi::Application.routes.draw do
       # resources :conversations, only: [:create, :destroy, :index]
       # match '/conversations/notebook', to: 'conversations#notebook', via: 'get'
     end
+    root to: "home#index"
   end 
 end
