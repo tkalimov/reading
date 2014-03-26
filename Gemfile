@@ -4,6 +4,7 @@ ruby '2.0.0'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.2'
 gem 'rails-api'
+gem "active_model_serializers"
 gem 'pg'
 gem 'unicorn'
 gem 'rails_12factor'
@@ -14,6 +15,7 @@ gem 'aws-sdk'
 gem 'omniauth-facebook'
 gem 'omniauth-linkedin-oauth2'
 gem "omniauth-google-oauth2"
+gem 'omniauth-khan-academy'
 gem 'figaro'
 gem 'httparty'
 gem 'faker'
@@ -26,6 +28,7 @@ gem 'coffee-script'
 #     gem 'uglifier', '>= 1.2.4'
 #     gem 'bootstrap-sass', '~> 2.0.3.1'
 # end
+
 
 group :development, :test do
   gem 'rspec-rails' 

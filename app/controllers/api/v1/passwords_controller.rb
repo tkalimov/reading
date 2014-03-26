@@ -67,7 +67,7 @@
 	    	end
 
 	    	def user_params
-          		params.require(:user).permit(:first_name, :last_name, :email, :password, :business_name, :reset_password_token)
+          		params.require(:user).permit(:first_name, :last_name, :email, :password, :reset_password_token)
       		end
       	end
   	end

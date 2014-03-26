@@ -1,10 +1,11 @@
 class User < ActiveRecord::Base
   has_many :conversations, dependent: :destroy 
+  has_many :videos, dependent: :destroy
   has_attached_file :avatar, styles: {thumb: '100x100>', square: '200x200#', medium: '300x300>'}
   validates_attachment_content_type :avatar, :content_type => /\Aimage\/.*\Z/
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, 
-         :omniauthable, :omniauth_providers => [:linkedin, :google_oauth2, :facebook]
+         :omniauthable, :omniauth_providers => [:linkedin, :google_oauth2, :facebook, :khan_academy]
   before_save :ensure_authentication_token
   validates :first_name, presence: true
   validates :last_name, presence: true
@@ -16,6 +17,19 @@ class User < ActiveRecord::Base
       self.authentication_token = generate_authentication_token
     end
   end
+
+  def video_stats
+    a = Hash.new()
+    self.videos.each do |video|
+      if a[video.category] != nil
+        a[video.category][:videos_watched] += 1
+        a[video.category][:seconds_watched] += video.length
+      else
+        a[video.category] = {videos_watched: 1, seconds_watched: video.length}
+      end 
+    end 
+    return a
+  end 
 
   def self.find_for_oauth(auth)
     where(auth.slice(:provider, :uid)).first_or_create do |user|
