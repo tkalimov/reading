@@ -20,13 +20,13 @@ module Api
       
       def data_summary
         user = User.first
-        render :json => {:videos=>user.video_summary}
-        # :articles=>user.article_summary, 
+        render :json => {:articles=>user.article_summary, :videos=>user.video_summary}
       end 
 
       def update_api_data 
         update_pocket
         update_youtube
+         render :json=>{:success=>true, :message=>"Article and video data updated"}
       end 
       
       def update

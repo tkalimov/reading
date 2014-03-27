@@ -20,7 +20,8 @@ class User < ActiveRecord::Base
   end
 
   def video_summary
-    output = {last_week: {total:0}, last_month: {total:0}, last_half_year: {total: 0}, last_year: {total: 0}}
+    output = {last_week: {total: {videos_watched: 0, seconds_watched: 0}}, last_month: {total: {videos_watched: 0, seconds_watched: 0}}, last_6_months: {total: {videos_watched: 0, seconds_watched: 0}}, last_year: {total: {videos_watched: 0, seconds_watched: 0}}}
+    
     self.videos.each do |video|
       if video.time_watched > 1.week.ago.utc
         if output[:last_week][video.category] != nil
@@ -29,7 +30,8 @@ class User < ActiveRecord::Base
         else
           output[:last_week][video.category] = {videos_watched: 1, seconds_watched: video.length}
         end
-        output[:last_week][:total] += 1
+        output[:last_week][:total][:videos_watched] += 1
+        output[:last_week][:total][:seconds_watched] += video.length
       end
 
       if video.time_watched > 1.month.ago.utc
@@ -39,17 +41,19 @@ class User < ActiveRecord::Base
         else
           output[:last_month][video.category] = {videos_watched: 1, seconds_watched: video.length}
         end
-        output[:last_month][:total] += 1
+        output[:last_month][:total][:videos_watched] += 1
+        output[:last_month][:total][:seconds_watched] += video.length
       end
 
       if video.time_watched > 6.months.ago.utc
-        if output[:last_half_year][video.category] != nil
-          output[:last_half_year][video.category][:videos_watched] += 1
-          output[:last_half_year][video.category][:seconds_watched] += video.length
+        if output[:last_6_months][video.category] != nil
+          output[:last_6_months][video.category][:videos_watched] += 1
+          output[:last_6_months][video.category][:seconds_watched] += video.length
         else
-          output[:last_half_year][video.category] = {videos_watched: 1, seconds_watched: video.length}
+          output[:last_6_months][video.category] = {videos_watched: 1, seconds_watched: video.length}
         end
-        output[:last_half_year][:total] += 1
+        output[:last_6_months][:total][:videos_watched] += 1
+        output[:last_6_months][:total][:seconds_watched] += video.length
       end
 
       if video.time_watched > 1.year.ago.utc
@@ -59,25 +63,47 @@ class User < ActiveRecord::Base
         else
           output[:last_year][video.category] = {videos_watched: 1, seconds_watched: video.length}
         end
-        output[:last_year][:total] += 1
+        output[:last_year][:total][:videos_watched] += 1
+        output[:last_year][:total][:seconds_watched] += video.length
       end
     end 
+
     return output
   end 
 
   def article_summary
-    output = Hash.new()
-    user = User.first
-      user.articles.each do |item|
-        if item.time_read > 1.week.ago.utc
-          words_last_week +=  item.word_count
-        elsif item.time_read > 1.month.ago.utc
-          words_last_month += item.word_count
-        elsif item.time_read > 1.year.ago.utc
-          words_last_year += item.word_count
-        end 
+    output = {last_week: {articles_read:0, words_read: 0, seconds_read:0}, last_month: {articles_read:0, words_read: 0, seconds_read:0}, last_6_months: {articles_read:0, words_read: 0, seconds_read:0}, last_year: {articles_read:0, words_read: 0, seconds_read:0}}
+    avg_wpm = 300 #words per minute 
+    words_per_second = avg_wpm / 60
+
+    self.articles.each do |article|
+      if article.time_read > 1.week.ago.utc
+        output[:last_week][:articles_read] += 1
+        output[:last_week][:words_read] += article.word_count
+        output[:last_week][:seconds_read] += article.word_count / words_per_second
       end
-      output = {words_last_week: words_last_week, words_last_month: words_last_month, words_last_year: words_last_year} 
+      
+      if article.time_read > 1.month.ago.utc
+        output[:last_month][:articles_read] += 1
+        output[:last_month][:words_read] += article.word_count
+        output[:last_month][:seconds_read] += article.word_count / words_per_second
+      end
+      
+      if article.time_read > 6.months.ago.utc
+        output[:last_6_months][:articles_read] += 1
+        output[:last_6_months][:words_read] += article.word_count
+        output[:last_6_months][:seconds_read] += article.word_count / words_per_second
+      end
+
+      if article.time_read > 1.year.ago.utc
+        output[:last_year][:articles_read] += 1
+        output[:last_year][:words_read] += article.word_count
+        output[:last_year][:seconds_read] += article.word_count / words_per_second
+      end
+
+    end 
+    return output
+
   end 
 
   def self.find_for_oauth(auth)
