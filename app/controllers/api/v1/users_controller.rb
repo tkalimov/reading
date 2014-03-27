@@ -3,8 +3,8 @@ module Api
     class UsersController < ApplicationController
       include ApiHelper
       after_filter :cors_set_access_control_headers      
-      # before_filter :authenticate_user_from_token!
-      # before_filter :authenticate_api_v1_user!
+      before_filter :authenticate_user_from_token!
+      before_filter :authenticate_api_v1_user!
 
       def index      
         #Show all users 
@@ -19,8 +19,8 @@ module Api
       end
       
       def data_summary
-        user = User.first
-        render :json => {:articles=>user.article_summary, :videos=>user.video_summary}
+        @user = current_api_v1_user
+        render :json => {:articles=>@user.article_summary, :videos=>@user.video_summary}
       end 
 
       def update_api_data 
@@ -55,14 +55,14 @@ module Api
       
       def authenticate_user_from_token!
         user_token = request.headers['user-token']
-  	    user       = user_token && User.find_by_authentication_token(user_token.to_s)
+  	    @user       = user_token && User.find_by_authentication_token(user_token.to_s)
   	 
-  	    if user
+  	    if @user
   	      # Notice we are passing store false, so the user is not
   	      # actually stored in the session and a token is needed
   	      # for every request. If you want the token to work as a
   	      # sign in token, you can simply remove store: false.
-  	      sign_in user, store: false
+  	      sign_in @user, store: false
   	    end
 	    end
     end
