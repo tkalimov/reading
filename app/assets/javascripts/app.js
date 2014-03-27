@@ -1,4 +1,4 @@
-var AlphaApi = angular.module('AlphaApi', ['ngResource']);
+var AlphaApi = angular.module('AlphaApi', ['ngResource', 'ui.bootstrap']);
 
 // TEST PHRASING TO CHECK THAT ANGULAR WORKS
 function AngularRocksCtrl($scope) {
