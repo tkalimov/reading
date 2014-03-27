@@ -1,6 +1,7 @@
 module Api
   module V1 
     class UsersController < ApplicationController
+      include ApiHelper
       after_filter :cors_set_access_control_headers      
       # before_filter :authenticate_user_from_token!
       # before_filter :authenticate_api_v1_user!
@@ -16,6 +17,17 @@ module Api
         @user = User.find(params[:id])
         render json: @users.as_json(only: [:id, :first_name, :last_name, :email, :created_at, :sign_in_count, :current_sign_in_at, :last_sign_in_at])
       end
+      
+      def data_summary
+        user = User.first
+        render :json => {:videos=>user.video_summary}
+        # :articles=>user.article_summary, 
+      end 
+
+      def update_api_data 
+        update_pocket
+        update_youtube
+      end 
       
       def update
         #Update single user

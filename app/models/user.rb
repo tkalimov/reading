@@ -19,17 +19,65 @@ class User < ActiveRecord::Base
     end
   end
 
-  def video_stats
-    a = Hash.new()
+  def video_summary
+    output = {last_week: {total:0}, last_month: {total:0}, last_half_year: {total: 0}, last_year: {total: 0}}
     self.videos.each do |video|
-      if a[video.category] != nil
-        a[video.category][:videos_watched] += 1
-        a[video.category][:seconds_watched] += video.length
-      else
-        a[video.category] = {videos_watched: 1, seconds_watched: video.length}
-      end 
+      if video.time_watched > 1.week.ago.utc
+        if output[:last_week][video.category] != nil
+          output[:last_week][video.category][:videos_watched] += 1
+          output[:last_week][video.category][:seconds_watched] += video.length
+        else
+          output[:last_week][video.category] = {videos_watched: 1, seconds_watched: video.length}
+        end
+        output[:last_week][:total] += 1
+      end
+
+      if video.time_watched > 1.month.ago.utc
+        if output[:last_month][video.category] != nil
+          output[:last_month][video.category][:videos_watched] += 1
+          output[:last_month][video.category][:seconds_watched] += video.length
+        else
+          output[:last_month][video.category] = {videos_watched: 1, seconds_watched: video.length}
+        end
+        output[:last_month][:total] += 1
+      end
+
+      if video.time_watched > 6.months.ago.utc
+        if output[:last_half_year][video.category] != nil
+          output[:last_half_year][video.category][:videos_watched] += 1
+          output[:last_half_year][video.category][:seconds_watched] += video.length
+        else
+          output[:last_half_year][video.category] = {videos_watched: 1, seconds_watched: video.length}
+        end
+        output[:last_half_year][:total] += 1
+      end
+
+      if video.time_watched > 1.year.ago.utc
+        if output[:last_year][video.category] != nil
+          output[:last_year][video.category][:videos_watched] += 1
+          output[:last_year][video.category][:seconds_watched] += video.length
+        else
+          output[:last_year][video.category] = {videos_watched: 1, seconds_watched: video.length}
+        end
+        output[:last_year][:total] += 1
+      end
     end 
-    return a
+    return output
+  end 
+
+  def article_summary
+    output = Hash.new()
+    user = User.first
+      user.articles.each do |item|
+        if item.time_read > 1.week.ago.utc
+          words_last_week +=  item.word_count
+        elsif item.time_read > 1.month.ago.utc
+          words_last_month += item.word_count
+        elsif item.time_read > 1.year.ago.utc
+          words_last_year += item.word_count
+        end 
+      end
+      output = {words_last_week: words_last_week, words_last_month: words_last_month, words_last_year: words_last_year} 
   end 
 
   def self.find_for_oauth(auth)
