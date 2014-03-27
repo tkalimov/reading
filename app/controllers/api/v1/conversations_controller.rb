@@ -7,29 +7,29 @@ module Api
       before_action :correct_user,   only: :destroy
 
       def index
-        @conversations = Conversation.all
-        render json: @conversations.as_json(only: [:id, :content, :created_at, :category], 
+        conversations = Conversation.all
+        render json: conversations.as_json(only: [:id, :content, :created_at, :category], 
             include: { user: { only: [:id, :first_name, :last_name] } })
       end
       
       def notebook
-        @notebook = Conversation.where(:user_id => current_api_v1_user, :category=> "Personal")
-        @notebook.sort_by(&:created_at)
-        render json: @notebook
+        notebook = Conversation.where(:user_id => current_api_v1_user, :category=> "Personal")
+        notebook.sort_by(&:created_at)
+        render json: notebook
       end 
 
       def create
-        @conversation = current_api_v1_user.conversations.build(conversation_params)
-        if @conversation.save
-          render json: @conversation, status: :created
+        conversation = current_api_v1_user.conversations.build(conversation_params)
+        if conversation.save
+          render json: conversation, status: :created
         else
-          render json: @conversation.errors, status: :unprocessable_entity
+          render json: conversation.errors, status: :unprocessable_entity
         end 
       end
 
       def destroy
-        @conversation = Conversation.find(params[:id])
-        render :json=>{:success=>true, :message=>"Post deleted"} if @conversation.destroy
+        conversation = Conversation.find(params[:id])
+        render :json=>{:success=>true, :message=>"Post deleted"} if conversation.destroy
       end
 
       private
@@ -48,9 +48,9 @@ module Api
       end
         
         def correct_user
-          @conversation = current_api_v1_user.conversations.find_by(id: params[:id])
-          # @conversation = Conversation.find(params[:id])
-          render json: {:success=>false, :errors=>:unauthorized_entity} if @conversation.nil?
+          conversation = current_api_v1_user.conversations.find_by(id: params[:id])
+          # conversation = Conversation.find(params[:id])
+          render json: {:success=>false, :errors=>:unauthorized_entity} if conversation.nil?
         end
     end
   end 
