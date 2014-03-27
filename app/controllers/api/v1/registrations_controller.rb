@@ -2,7 +2,8 @@ module Api
 	module V1
 		class RegistrationsController < Devise::RegistrationsController
 		      after_filter :cors_set_access_control_headers
-
+			  respond_to :json
+			  
 		      def create
 		        @user = User.new(user_params)
 		        if @user.save
