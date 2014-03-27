@@ -1,5 +1,6 @@
 var AlphaApi = angular.module('AlphaApi', ['ngResource', 'ui.bootstrap', 'ngRoute']);
 
+// ROUTES FOR PARTIALS
 
 AlphaApi.config(function($routeProvider) {
 $routeProvider
@@ -21,6 +22,12 @@ $routeProvider
       controller: 'SignInCtrl'
     })
 })
+
+// CONTROLLERS
+
+
+// OTHER JAVASCRIPT ACTIVITIES
+
 // TEST PHRASING TO CHECK THAT ANGULAR WORKS
 function AngularRocksCtrl($scope) {
 	$scope.message = "Angular Rocks!"
