@@ -1,5 +1,27 @@
-var AlphaApi = angular.module('AlphaApi', ['ngResource', 'ui.bootstrap']);
+var AlphaApi = angular.module('AlphaApi', ['ngResource', 'ui.bootstrap', 'ngRoute']);
 
+
+AlphaApi.config(function($routeProvider) {
+$routeProvider
+    .when('/sign-in', {
+      templateUrl: "partials/sign-in.html",
+      controller: 'SignInCtrl'
+    })
+    .when('/sign-up', {
+      templateUrl: "partials/sign-up.html",
+      controller: 'SignUpCtrl'
+    })
+    .when('home', {
+      url: "/home",
+      templateUrl: "partials/home.html",
+      controller: 'HomeCtrl'
+    })
+    // if none of the above are matched, go to this one
+    .otherwise({
+      templateUrl: "../partials/sign-in.html",
+      controller: 'SignInCtrl'
+    })
+})
 // TEST PHRASING TO CHECK THAT ANGULAR WORKS
 function AngularRocksCtrl($scope) {
 	$scope.message = "Angular Rocks!"
