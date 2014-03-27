@@ -8,27 +8,27 @@ module Api
 
       def index      
         #Show all users 
-        users = User.all
-        render json: users.as_json(only: [:id, :first_name, :last_name, :email, :created_at, :sign_in_count, :current_sign_in_at, :last_sign_in_at])
+        @users = User.all
+        render json: @users.as_json(only: [:id, :first_name, :last_name, :email, :created_at, :sign_in_count, :current_sign_in_at, :last_sign_in_at])
       end
 
       def show
         #Show single user
-        user = User.find(params[:id])
-        render json: users.as_json(only: [:id, :first_name, :last_name, :email, :created_at, :sign_in_count, :current_sign_in_at, :last_sign_in_at])
+        @user = User.find(params[:id])
+        render json: @user.as_json(only: [:id, :first_name, :last_name, :email, :created_at, :sign_in_count, :current_sign_in_at, :last_sign_in_at])
       end
       
       def data_summary
-        user = current_api_v1_user
-        render :json => {:articles=>user.article_summary, :videos=>user.video_summary}
+        @user = current_api_v1_user
+        render :json => {:articles=>@user.article_summary, :videos=>@user.video_summary}
       end 
 
       def update_api_data 
-        user = current_api_v1_user
-        if user.pocket_access_token 
+        @user = current_api_v1_user
+        if @user.pocket_access_token 
           update_pocket
         end 
-        if user.google_access_token
+        if @user.google_access_token
           update_youtube
         end 
          render :json=>{:success=>true, :message=>"Article and video data updated"}
@@ -36,18 +36,18 @@ module Api
       
       def update
         #Update single user
-        user = User.find(params[:id])
-        if user.update_attributes(user_params)
-          render json: user.as_json(only: [:id, :first_name, :last_name, :email, :created_at, :sign_in_count, :current_sign_in_at, :last_sign_in_at, :authentication_token])
-          sign_in user
+        @user = User.find(params[:id])
+        if @user.update_attributes(user_params)
+          render json: @user.as_json(only: [:id, :first_name, :last_name, :email, :created_at, :sign_in_count, :current_sign_in_at, :last_sign_in_at, :authentication_token])
+          sign_in @user
         else
-          render json: user.errors, status: :unprocessable_entity
+          render json: @user.errors, status: :unprocessable_entity
         end
       end
 
       def destroy
-        user = User.find(params[:id])
-        if user.destroy
+        @user = User.find(params[:id])
+        if @user.destroy
           render :json=>{:success=>true, :message=>"User deleted"}
         end 
       end

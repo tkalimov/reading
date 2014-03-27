@@ -28,7 +28,7 @@ module ApiHelper
         @user = current_api_v1_user
         catch (:done) do 
             while index < 10000 do
-              historyFeed = HTTParty.get('https://gdata.youtube.com/feeds/api/@users/default/watch_history', {query: {v: 2, alt: 'json', access_token: @user.google_access_token, 'max-results' => 50, 'start-index' => index}})
+              historyFeed = HTTParty.get('https://gdata.youtube.com/feeds/api/users/default/watch_history', {query: {v: 2, alt: 'json', access_token: @user.google_access_token, 'max-results' => 50, 'start-index' => index}})
               if historyFeed['feed']['entry']
                 historyFeed['feed']['entry'].each do |entry|
                   if @user.youtube_connected == true
@@ -80,7 +80,7 @@ module ApiHelper
 		@user = current_api_v1_user 
 		oauth_nonce = SecureRandom.hex
 		oauth_timestamp = Time.now.to_i
-		url = "https://www.khanacademy.org/api/v1/@user#{type}"
+		url = "https://www.khanacademy.org/api/v1/user#{type}"
 		encoded_url = CGI::escape(url)
 		param_string = CGI::escape("oauth_consumer_key=#{ENV['KHAN_CONSUMER_KEY']}&oauth_nonce=#{oauth_nonce}&oauth_signature_method=HMAC-SHA1&oauth_timestamp=#{oauth_timestamp}&oauth_token=#{@user.khan_access_token}&oauth_version=1.0")
 		signature_string = "GET&#{encoded_url}&" + param_string
