@@ -10,7 +10,7 @@ AlphaApi::Application.routes.draw do
       match '/auth/:provider/callback', to: 'sessions#create', via: 'get'
       match '/pocket_auth', to: 'stats#pocket_auth', via: 'get'
       match '/pocket_middle', to: 'stats#pocket_middle', via: 'get'
-      match '/stats/update', to: 'users#update_api_data', via: 'get'
+      match '/stats/update', to: 'users#update_api_data', via: 'post'
       match '/stats/summary', to: 'users#data_summary', via: 'get'
 
       # resources :conversations, only: [:create, :destroy, :index]

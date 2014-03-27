@@ -14,9 +14,10 @@ module Api
 	      	def pocket_middle
 	      		@user = current_api_v1_user
 	        	pocketAuthorizeURL = 'https://getpocket.com/v3/oauth/authorize' 
-	         	user_response = HTTParty.post(pocketAuthorizeURL, :body => {consumer_key: ENV['POCKET_CONSUMER_KEY'], code: $pocket_start.parsed_response["code"]}, :headers => {'X-Accept' => 'application/json'})
+	         	user_response = HTTParty.post(pocketAuthorizeURL, :body => {consumer_key: ENV['POCKET_CONSUMER_KEY'], code: $pocket_token}, :headers => {'X-Accept' => 'application/json'})
+
 	            @user.update_attributes(:pocket_access_token => user_response.parsed_response['access_token'])
-	            redirect_to root_path
+	            redirect_to '/#/home'
 	      	end 
 		end
 	end

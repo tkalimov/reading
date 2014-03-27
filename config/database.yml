@@ -1,9 +1,9 @@
 development:
   adapter: postgresql
-  database: alpha_development_database
+  database: alpha1_development_database
   host: localhost
 
 test:
   adapter: postgresql
-  database: alpha_test_database
+  database: alpha1_test_database
   host: localhost
