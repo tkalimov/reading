@@ -229,13 +229,10 @@ Devise.setup do |config|
   # up on your models and hooks.
   
 
-  # config.omniauth :facebook, ENV['FACEBOOK_APP_ID'], ENV['FACEBOOK_APP_SECRET']
-  # config.omniauth :linkedin, ENV['LINKEDIN_API_KEY'], ENV['LINKEDIN_SECRET_KEY']
-  # config.omniauth :google_oauth2,  ENV['GOOGLE_CLIENT_ID'], ENV['GOOGLE_CLIENT_SECRET']
-  config.omniauth :facebook, "267158353447146", "fd55c9241c162ce950171b67bfe598c2"
-  config.omniauth :linkedin,  "771xbh4dq42vil", "L0UjrlXJWctttOTX"
+  config.omniauth :facebook, ENV['FACEBOOK_APP_ID'], ENV['FACEBOOK_APP_SECRET']
+  config.omniauth :linkedin, ENV['LINKEDIN_API_KEY'], ENV['LINKEDIN_SECRET_KEY']
   config.omniauth :khan_academy, ENV['KHAN_CONSUMER_KEY'], ENV['KHAN_CONSUMER_SECRET']
-  config.omniauth :google_oauth2,  "3397687832.apps.googleusercontent.com",  "pPejwNZgPqBGWwDu9k_TkLK7", 
+  config.omniauth :google_oauth2,  ENV['GOOGLE_CLIENT_ID'], ENV['GOOGLE_CLIENT_SECRET'], 
     {
       :scope => "userinfo.email, userinfo.profile, youtube"
     }
