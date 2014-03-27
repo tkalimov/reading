@@ -1,9 +1,4 @@
-<!-- <header class="bar bar-header bar-dark">
-	<button class="button icon ion-navicon button-dark"></button>
-    <h1 class="title">Sign-in</h1>
-</header>
- -->
-<!-- <ion-content has-header="true" scroll="false" has-footer="true"> -->
+<!-- 
 	<div class="item item-image padding">
     	<img src="roundview-logo.png">
   	</div>
@@ -24,8 +19,33 @@
 	<div class="row">
   		<div class="col col-33 col-offset-33">Forgot password? | <a href="#/sign-up">Sign Up</a></div>
 	</div> 
-<!-- </ion-content> -->
+</ion-content> -->
 
-<div class="bar bar-footer bar-light">
+<!-- <div class="bar bar-footer bar-light">
 	<div class="title">Copyright Roundview 2014</div>
 </div>
+ -->
+<div class="container"> 
+	<div class="row" ng-controller="SignInCtrl">
+		<form ng-submit="signInUser(user)">
+			<div class="list list-inset">
+			  <label class="item item-input">
+			    <input type="email" placeholder="Email Address" ng-model="user.email">
+			  </label>
+			  <label class="item item-input">
+			    <input type="password" placeholder="Password" ng-model="user.password">
+			  </label>
+			</div>
+			<div class="error padding-left"> {{errors}}</div>
+			<div class="padding">
+			  <button type="submit" class="button button-block button-positive">Submit</button>
+			</div>
+		</form>
+	</div>
+<!-- 	<div class="row"> 
+		<a href="/api/v1/users/auth/google_oauth2"> Sign in with Google </a>
+	</div>  -->
+	<div class="row">
+		<a href="#/sign-up"> Register </a>
+	</div>
+</div> 

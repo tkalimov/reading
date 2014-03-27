@@ -24,8 +24,11 @@ module Api
       end 
 
       def update_api_data 
-        update_pocket
-        update_youtube
+        begin 
+          update_pocket
+        rescue 
+          update_youtube
+        end 
          render :json=>{:success=>true, :message=>"Article and video data updated"}
       end 
       
