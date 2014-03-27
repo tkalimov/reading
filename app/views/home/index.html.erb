@@ -1,3 +1,24 @@
+  
 <div>
-  <h1>Hello!</h1>
+  <label> Name: </label>
+  <input type="text" ng-model="yourName" placeholder="Enter a name here">
+  <hr>
+  <h1>Hello {{yourName}}!</h1>
 </div>
+
+
+<div ng-controller="AngularRocksCtrl">
+  <h1>Message: {{message}}</h1>
+</div>
+
+
+<div ng-controller="PocketListCtrl">
+  <div id="pocketlist-list-container">
+    <ul>
+      <tr>
+        <td>{{pocketlists.archived}}</td>
+        <td>{{pocketlists.total}}</td>
+        <td>{{pocketlists.unread}}</td>
+    </ul>
+  </div>
+</div> 
