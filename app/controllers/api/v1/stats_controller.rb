@@ -5,9 +5,10 @@ module Api
 			#TWO METHODS TO AUTHORIZE POCKET 
 			def pocket_auth
 		        pocketTokenRequestURL = 'https://getpocket.com/v3/oauth/request'
-		        response = HTTParty.post(pocketTokenRequestURL, :body => {consumer_key: ENV['POCKET_CONSUMER_KEY'], redirect_uri: "http://localhost:3000/api/v1/pocket_middle"}, :headers => {'X-Accept' => 'application/json'})
+		        redirect_url = "http://mighty-basin-9678.herokuapp.com/api/v1/pocket_middle"
+		        response = HTTParty.post(pocketTokenRequestURL, :body => {consumer_key: ENV['POCKET_CONSUMER_KEY'], redirect_uri: redirect_url}, :headers => {'X-Accept' => 'application/json'})
 		        $pocket_token = response.parsed_response["code"]
-		        url = 'https://getpocket.com/auth/authorize?request_token=' + $pocket_token + '&redirect_uri=http://localhost:3000/api/v1/pocket_middle'
+		        url = 'https://getpocket.com/auth/authorize?request_token=' + $pocket_token + "&redirect_uri=#{redirect_url}"
 		        redirect_to url
 	      	end 
 
