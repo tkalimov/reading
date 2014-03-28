@@ -27,7 +27,7 @@ module ApiHelper
         index = 1
         @user = current_api_v1_user
         catch (:done) do 
-            while index < 10000 do
+            while index < 500 do
               historyFeed = HTTParty.get('https://gdata.youtube.com/feeds/api/users/default/watch_history', {query: {v: 2, alt: 'json', access_token: @user.google_access_token, 'max-results' => 50, 'start-index' => index}})
               if historyFeed['feed']['entry']
                 historyFeed['feed']['entry'].each do |entry|
