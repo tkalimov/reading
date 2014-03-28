@@ -1,6 +1,6 @@
 //= require jquery
 //= require angular
-//= require highstock.src.js
+//= require highcharts-all
 //= require highcharts-ng
 
 //= require ui-bootstrap
