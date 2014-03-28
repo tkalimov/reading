@@ -11,18 +11,20 @@ AlphaApi.controller('HomeCtrl', function($scope, $http, $rootScope, $location, S
                   type: 'column'
               },
               legend: {
-                   enabled: true
+                   enabled: false
               },
           },
           series: [
           {name: 'Words Read', data: $rootScope.article_chart_data}],
           title: {
-              text: 'Article tracker'
+              text: "See how much reading you've done!"
           },
           xAxis: {
                 categories: ['Last Week', 'Last Month', 'Last Year']
             },
-          
+          yAxis: {
+            title: {text: "Words read"}
+          },
           credits: {
               enabled: false
           },
