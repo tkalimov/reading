@@ -1,4 +1,4 @@
-var AlphaApi = angular.module('AlphaApi', ['ngResource', 'ui.bootstrap', 'ngRoute']);
+var AlphaApi = angular.module('AlphaApi', ['ngResource', 'ui.bootstrap', 'ngRoute',"highcharts-ng"]);
 
 // ROUTES FOR PARTIALS
 
@@ -23,16 +23,9 @@ $routeProvider
     })
 })
 
-// CONTROLLERS
 
-
-// OTHER JAVASCRIPT ACTIVITIES
 
 // TEST PHRASING TO CHECK THAT ANGULAR WORKS
-function AngularRocksCtrl($scope) {
-	$scope.message = "Angular Rocks!"
-} 
-
 // POCKET LIST RESOURCE
 // http://www.masnun.com/2013/08/28/rest-access-in-angularjs-using-ngresource.html
 AlphaApi.factory("StatsSummary", function($resource) {
@@ -45,22 +38,3 @@ AlphaApi.factory("StatsSummary", function($resource) {
     }
   });   
 })
-
-// Get all reading returned by the API - 
-
-
-function AlertDemoCtrl($scope) {
-  $scope.alerts = [
-    { type: 'danger', msg: 'Oh snap! Change a few things up and try submitting again.' },
-    { type: 'success', msg: 'Well done! You successfully read this important alert message.' }
-  ];
-
-  $scope.addAlert = function() {
-    $scope.alerts.push({msg: "Another alert!"});
-  };
-
-  $scope.closeAlert = function(index) {
-    $scope.alerts.splice(index, 1);
-  };
-
-}

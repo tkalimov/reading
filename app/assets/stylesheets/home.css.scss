@@ -1,79 +1,52 @@
 body {
-  font-size: 12px;
-  font-family: Helvetica, sans-serif;
-  background-color: #ddd;
-  margin: 0px;
+  // min-height: 2000px;
+  padding-top: 30px;
 }
 
-header {
-  background-color: #4F4F4F;
-  color: #fff;
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+}
+#footer {
   position: absolute;
-  height: 36px;
-  top: 0;
-  left: 0;
-  right: 0;
-  font-size: 18px;
-  line-height: 36px;
-  font-weight: bold;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  background-color: #f5f5f5;
+}
+
+/* Custom page CSS
+-------------------------------------------------- */
+/* Not required for template or sticky footer method. */
+
+body > .container {
+  padding: 60px 15px 0;
+}
+.container .text-muted {
+  margin: 20px 0;
+}
+
+#footer > .container {
+  padding-right: 15px;
   padding-left: 15px;
 }
 
-#screencast-ctrl {
-  background-color: #fff;
-  position: absolute;
-  top: 37px;
-  width: 100%;
-  bottom: 0;
-  overflow: auto;
+code {
+  font-size: 80%;
 }
 
-#screencast-list-container {
-  background-color: #fff;
-  position: absolute;
-  min-height: 700px;
-  width: 300px;
-  top: 37px;
-  left: 0;
-  bottom: 0;
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
-  ul {
-    margin: 0px;
-    list-style: none;
-    padding: 0px;
-    li {
-      cursor: pointer;
-      border-bottom: 1px solid #ddd;
-      padding: 0 10px;
-    }
-  }
-  h3 {
-    font-size: 14px;
-    small {
-      font-size: 12px;
-      color: #ccc;
-      font-weight: normal;
-    }
-    &.active {
-      color: red;
-    }
-  }
+.form-control {
+  width: 60%
 }
 
-#screencast-view-container {
-  position: absolute;
-  border-left: 1px solid #d0d0d0;
-  top: 37px;
-  left: 300px;
-  right: 0;
-  bottom: 0;
-  background-color: #fff;
-  min-height: 700px;
-  padding: 5px 25px;
 
-  #player {
-    border: 1px solid #000;
-    max-width: 800px;
+@media (min-width: 768px) {
+  .container-narrow {
+    max-width: 730px;
   }
 }
