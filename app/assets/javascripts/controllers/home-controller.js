@@ -1,5 +1,6 @@
 AlphaApi.controller('HomeCtrl', function($scope, $http, $rootScope, $location, StatsSummary) {
   console.log('HomeCtrl');
+  debugger
   var data = StatsSummary.get({}, 
     function() {
       $scope.articles = data.articles;
@@ -84,5 +85,5 @@ AlphaApi.controller('HomeCtrl', function($scope, $http, $rootScope, $location, S
     	console.log('error')
     });
   }
-  
+  $scope.updateStats;
 })

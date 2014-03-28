@@ -7,9 +7,6 @@ module Api
 			    @user = current_api_v1_user
 			    @user.update_attributes(:google_access_token => request.env["omniauth.auth"].credentials['token'])
 				redirect_to '/#/home'
-				if @user.google_access_token
-          			update_youtube
-        		end
 			   #  if user.persisted?
 			   #    sign_in user, :event => :authentication #this will throw if user is not activated
 			   #    render :json=> {:success=>true, :auth_token=>user.authentication_token, :email=>user.email}
