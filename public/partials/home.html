@@ -1,3 +1,103 @@
+
+<!-- Fixed Navigation bar with drop down menu
+============================================= -->
+
+<div class= "navbar navbar-default navabar-fixed-top">
+	<div class="container">
+		
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle ="colla[ze" data-target=".navbar-collapse">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a href="#" class="navbar-brand">Roundview</a>
+		</div>
+		
+		<div class="navbar-collapse collapse">
+			<ul class="nav navbar-nav">
+				<li><a href="#">Home</a></li>
+				<li class="dropdown">
+					<a href="#" class = "dropdown-toggle" data-toggle="dropdown">Dashboard<b class="caret"></b></a> 
+					<ul class="dropdown-menu">
+						<li><a href="#">Weekly</a></li>
+						<li><a href="#">Monthly</a></li>
+						<li><a href="#">Annual</a></li>
+					</ul>
+				</li>
+				<li class="dropdown">
+					<a href="#" class = "dropdown-toggle" data-toggle="dropdown">Social<b class="caret"></b></a> </a>
+					<ul class="dropdown-menu">
+						<li><a href="#">Friends</a></li>
+						<li><a href="#">Colleagues</a></li>
+						<li><a href="#">Following</a></li>
+					</ul>
+				</li>
+				<li><a href="#">Find Content</a></li>
+			</ul>
+		</div>
+
+	</div>
+</div>
+
+<!--Carousel Project 
+============================================= -->
+
+<div id="MyCarousel" class= "carousel slide">
+
+	<ol class="carousel-indicators">
+		<li data-target="MyCarousel" data-slide-to="0" class="active"></li> 
+		<li data-target="MyCarousel" data-slide-to="1"></li>
+		<li data-target="MyCarousel" data-slide-to="2"></li> 
+	</ol>
+
+	<div class="carousel-inner">
+
+		<div class = "item active">
+			<img src ="roundview-logo.png"/>
+			<div class ="container">
+				<div class = "carousel-caption">
+					<h1>My Heading Text</h1>
+					<p>This will contain the text to appear on our slide</p>
+					<p><a class="btn btn-large btn-primary">Signup</a></p>
+				</div>
+			</div>	
+		</div>
+
+		<div class = "item">
+			<img src ="#"/>
+			<div class ="container">
+				<div class = "carousel-caption">
+					<h1>My Heading Text</h1>
+					<p>This will contain the text to appear on our slide</p>
+					<p><a class="btn btn-large btn-primary">Signup</a></p>
+				</div>
+			</div>	
+		</div>
+
+		<div class = "item">
+			<img src ="#"/>
+			<div class ="container">
+				<div class = "carousel-caption">
+					<h1>My Heading Text</h1>
+					<p>This will contain the text to appear on our slide</p>
+					<p><a class="btn btn-large btn-primary">Signup</a></p>
+				</div>
+			</div>	
+		</div>
+
+	</div>
+
+	<a class="left carousel-control" href ="MyCarousel" data-slide="prev">
+		<span class="glyphicon glyphicon-chevron-left"></span>
+	</a>
+	<a class="right carousel-control" href ="MyCarousel" data-slide="next">
+		<span class="glyphicon glyphicon-chevron-right"></span>
+	</a>
+
+</div>
+
+
 <div class="container">
 	<div class="row">
 		<p><a href="/api/v1/users/auth/google_oauth2"> Add your YouTube account </a></p>
@@ -5,6 +105,5 @@
 	</div>
 	<div class="row">
 		<button ng-click="updateStats()"> Update stats </button>
-	<div>
-
+	<div>		
 </div> 
