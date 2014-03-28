@@ -1,13 +1,14 @@
 module Api
 	module V1 
 		class StatsController < ApplicationController
-
+			include ApiHelper
 			#TWO METHODS TO AUTHORIZE POCKET 
 			def pocket_auth
 		        pocketTokenRequestURL = 'https://getpocket.com/v3/oauth/request'
-		        response = HTTParty.post(pocketTokenRequestURL, :body => {consumer_key: ENV['POCKET_CONSUMER_KEY'], redirect_uri: "http://localhost:3000/api/v1/pocket_middle"}, :headers => {'X-Accept' => 'application/json'})
+		        redirect_url = "http://#{request.host_with_port}/api/v1/pocket_middle"
+		        response = HTTParty.post(pocketTokenRequestURL, :body => {consumer_key: ENV['POCKET_CONSUMER_KEY'], redirect_uri: redirect_url}, :headers => {'X-Accept' => 'application/json'})
 		        $pocket_token = response.parsed_response["code"]
-		        url = 'https://getpocket.com/auth/authorize?request_token=' + $pocket_token + '&redirect_uri=http://localhost:3000/api/v1/pocket_middle'
+		        url = 'https://getpocket.com/auth/authorize?request_token=' + $pocket_token + "&redirect_uri=#{redirect_url}"
 		        redirect_to url
 	      	end 
 
@@ -18,6 +19,9 @@ module Api
 
 	            @user.update_attributes(:pocket_access_token => user_response.parsed_response['access_token'])
 	            redirect_to '/#/home'
+				if @user.pocket_access_token 
+          			update_pocket
+        		end
 	      	end 
 		end
 	end
