@@ -3,7 +3,8 @@ AlphaApi.controller('HomeCtrl', function($scope, $http, $rootScope, $location, S
   var data = StatsSummary.get({}, 
     function() {
       $scope.articles = data.articles;
-      $rootScope.article_chart_data = [$scope.articles.last_week.words_read, $scope.articles.last_month.words_read, $scope.articles.last_year.words_read]
+      $scope.videos = data.videos;
+      debugger
       console.log('success');
       $scope.articleChartConfig = {
           options: {
@@ -15,12 +16,12 @@ AlphaApi.controller('HomeCtrl', function($scope, $http, $rootScope, $location, S
               },
           },
           series: [
-          {name: 'Words Read', data: $rootScope.article_chart_data}],
+          {name: 'Words Read', data: $scope.articles.data}],
           title: {
               text: "See how much reading you've done!"
           },
           xAxis: {
-                categories: ['Last Week', 'Last Month', 'Last Year']
+                categories: $scope.articles.labels
             },
           yAxis: {
             title: {text: "Words read"}
@@ -30,7 +31,32 @@ AlphaApi.controller('HomeCtrl', function($scope, $http, $rootScope, $location, S
           },
           loading: false
       }
-      debugger
+
+      $scope.videoChartConfig = {
+          options: {
+              chart: {
+                  type: 'column'
+              },
+              legend: {
+                   enabled: false
+              },
+          },
+          series: [
+          {name: 'Words Read', data: $scope.articles.data}],
+          title: {
+              text: "See how much reading you've done!"
+          },
+          xAxis: {
+                categories: $scope.articles.labels
+            },
+          yAxis: {
+            title: {text: "Words read"}
+          },
+          credits: {
+              enabled: false
+          },
+          loading: false
+      }
     },
     function() {
       console.log('error');

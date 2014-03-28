@@ -44,30 +44,8 @@
 
 // })
 
-AlphaApi.controller('VideoChartCtrl', function($scope, $rootScope) {
-	console.log('VideoChartCtrl');
-	$scope.config = {
-          options: {
-              chart: {
-                  type: 'bar'
-              },
-              legend: {
-                   enabled: true
-              },
-          },
-          series: [
-          {name: 'Words Read', data: $rootScope.article_chart_data}],
-          title: {
-              text: 'Article tracker'
-          },
-          xAxis: {
-                categories: ['Last Week', 'Last Month', 'Last Year']
-            },
-          
-          credits: {
-              enabled: false
-          },
-          loading: false
-    }
+// AlphaApi.controller('VideoChartCtrl', function($scope, $rootScope) {
+// 	console.log('VideoChartCtrl');
+	
 
-})
+// })
