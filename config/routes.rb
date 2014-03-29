@@ -12,6 +12,7 @@ AlphaApi::Application.routes.draw do
       match '/pocket_middle', to: 'stats#pocket_middle', via: 'get'
       match '/stats/update', to: 'users#update_api_data', via: 'post'
       match '/stats/summary', to: 'users#data_summary', via: 'get'
+      match '/dummy', to: 'users#dummy', via: 'get'
 
       # resources :conversations, only: [:create, :destroy, :index]
       # match '/conversations/notebook', to: 'conversations#notebook', via: 'get'

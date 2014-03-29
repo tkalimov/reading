@@ -18,8 +18,8 @@ $routeProvider
     })
     // if none of the above are matched, go to this one
     .otherwise({
-      templateUrl: "partials/sign-in.html",
-      controller: 'SignInCtrl'
+      templateUrl: "partials/home.html",
+      controller: 'HomeCtrl'
     })
 })
 

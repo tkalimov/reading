@@ -3,8 +3,8 @@ module Api
     class UsersController < ApplicationController
       include ApiHelper
       after_filter :cors_set_access_control_headers      
-      before_filter :authenticate_user_from_token!
-      before_filter :authenticate_api_v1_user!
+      # before_filter :authenticate_user_from_token!
+      # before_filter :authenticate_api_v1_user!
 
       def index      
         #Show all users 
@@ -18,6 +18,16 @@ module Api
         render json: @user.as_json(only: [:id, :first_name, :last_name, :email, :created_at, :sign_in_count, :current_sign_in_at, :last_sign_in_at])
       end
       
+      def dummy
+        @user = User.create!(first_name: Faker::Name.first_name,
+                      last_name: Faker::Name.last_name,
+                      email: Faker::Internet.email,
+                      password: Faker::Internet.password(min_length = 8)
+                      )
+        sign_in @user
+        render :json=> {:success=>true, :auth_token=>@user.authentication_token, :email=>@user.email}
+      end 
+
       def data_summary
         @user = current_api_v1_user
         render :json => {:articles=>@user.article_summary, :videos=>@user.video_summary}

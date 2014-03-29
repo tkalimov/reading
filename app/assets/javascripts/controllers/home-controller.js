@@ -1,6 +1,17 @@
 AlphaApi.controller('HomeCtrl', function($scope, $http, $rootScope, $location, StatsSummary) {
   console.log('HomeCtrl');
-  debugger
+  if (window.localStorage.getItem("auth_token") === null ) {
+    $http.get('/api/v1/dummy').
+        success(function(response) {
+          console.log('login successful');
+          window.localStorage.setItem("auth_token", response.auth_token);
+        }).
+        error(function(response) {
+          $scope.errors = response.message;
+          console.log('error');
+      });
+  }
+
   var data = StatsSummary.get({}, 
     function() {
       $scope.articles = data.articles;
