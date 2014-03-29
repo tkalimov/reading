@@ -11,7 +11,12 @@ AlphaApi.controller('HomeCtrl', function($scope, $http, $rootScope, $location, S
           console.log('error');
       });
   }
-
+  $scope.articleChartConfig = {
+          loading: true
+      };
+  $scope.videoChartConfig = {
+      loading: true
+  }
   var data = StatsSummary.get({}, 
     function() {
       $scope.articles = data.articles;
